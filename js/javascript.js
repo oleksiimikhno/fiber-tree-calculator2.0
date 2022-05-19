@@ -225,7 +225,7 @@ setSplitType();
   
 window.addEventListener('load', function() {
     'use strict';
-  console.log(' document.querySelector ',  document.querySelector('fob-element'));
+  // console.log(' document.querySelector ',  document.querySelector('fob-element'));
 
 
 
