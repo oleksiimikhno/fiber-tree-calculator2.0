@@ -1,5 +1,10 @@
 'use strict';
 
+import FobElement from './elements/fob-elem.js';
+import SplitElement from './elements/split-elem.js';
+
+
+
 let objSplit = {
     FBT: {
         '5_95': {
@@ -220,12 +225,16 @@ setSplitType();
   
 window.addEventListener('load', function() {
     'use strict';
-  
+  console.log(' document.querySelector ',  document.querySelector('fob-element'));
+
+
+
+
     let target1 = document.getElementById('fob-1'),
       target2 = document.getElementById('fob-2'),
       wallBBox = document.getElementById('field').getBoundingClientRect(),
       line;
-  
+  console.log(target1);
     wallBBox = {
       top: wallBBox.top + window.pageYOffset - target1.getBoundingClientRect().height,
       right: wallBBox.right + window.pageXOffset
