@@ -1,0 +1,41 @@
+.fob {
+    position: relative;
+    display: inline-block;
+    /* height: 50px;
+    width: 50px; */
+    min-width: 50px;
+    min-height: 120px;
+    height: auto;
+    /* padding: 15px; */
+    border-radius:10px;
+    background-color: beige;
+    border: 1px solid #999;
+    transition: box-shadow .3s;
+    /* cursor: pointer; */
+    /* pointer-events: none; */
+    /* z-index: 1; */
+    /* overflow: hidden; */
+}
+
+.fob:hover {
+    box-shadow: 0 0 11px rgba(33,33,33,.2) !important; 
+}
+#fob-1 {
+    transform: translateY(150px);
+
+}
+
+#fob-2 {
+    transform: translate(150px, 150px);
+}
+
+/* head */
+.draggable {
+    width: 100%;
+    background-color: bisque;
+    text-align: center;
+}
+
+.fob-head {
+    padding: 5px 15px;
+}

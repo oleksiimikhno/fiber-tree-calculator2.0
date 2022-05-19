@@ -1,0 +1,29 @@
+.split {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    padding: 5px 5px;
+    border-radius: 10px;
+    border: 1px solid #999;
+    background-color: rgb(196, 228, 255);
+    margin: 15px;
+}
+.split-selected {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%); 
+    
+}
+.split-out {
+    position: relative;
+}
+.split select {
+    font-size: 12px;
+    cursor: pointer;
+}
+.split input {
+    max-height: 22px;
+    max-width: 45px;
+    text-align: center;
+}
