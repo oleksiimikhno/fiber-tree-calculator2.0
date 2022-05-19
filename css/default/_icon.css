@@ -1,6 +1,7 @@
 .icon{
     height: 25px;
     width: 25px;
+    cursor: pointer;
 }
 .icon-out {
     position: absolute;
