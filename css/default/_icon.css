@@ -6,4 +6,5 @@
 .icon-out {
     position: absolute;
     right: -30px;
+    pointer-events: auto;
 }

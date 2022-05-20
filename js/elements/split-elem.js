@@ -30,6 +30,7 @@ export default class SplitElement extends HTMLElement {
         const target = event.target;
 
         if (target.matches('.create-split')) {
+            let line;
             i++;
             let split = document.createElement('split-element');
             split.classList.add('row', 'split');
@@ -41,7 +42,7 @@ export default class SplitElement extends HTMLElement {
 
             
             this.style.marginTop ='70px'
-            split.style.transform = `translate(80px, 80px)`
+            split.style.transform = `translate(10px, 10px)`
 
             split.innerHTML = 
                 `<div class="row split-selected">
@@ -70,102 +71,17 @@ export default class SplitElement extends HTMLElement {
                 </div>`;
             this.insertAdjacentElement('afterend', split);
 
-
-// console.log(this.parentElement);
-//            const createLineToSplit = new LeaderLine(target, split);
-
-//            new PlainDraggable(target, {
-//                 handle: this.parentElement,
-//                 onMove: function() { line.position(); },
-//            })
-
-//            new PlainDraggable(target, {
-//             handle: this.parentElement,
-//             onMove: function() { createLineToSplit.position(); },
-//             })
-
-//            new PlainDraggable(split, {
-//             handle: this.parentElement,
-//             onMove: function() { createLineToSplit.position(); },
-//             // onMoveStart: function() { line.dash = {animation: true}; },
-//             // onDragEnd: function() { line.dash = false; },
-//             // handle: true, 
-//           });
-            // new PlainDraggable(target, {
-            //     handle: document.querySelector('#split-3'),
-            //     onMove: function() { line.position(); },
-            //     onMoveStart: function() { line.dash = {animation: true}; },
-            //     onDragEnd: function() { line.dash = false; },
-                
-            //     // handle: true,
-            //     zIndex: 1
-            //   });
-
-
-            let target1 = target,
-            target2 = split,
-            line;
-          // wallBBox = {
-          //   top: wallBBox.top + window.pageYOffset - target1.getBoundingClientRect().height,
-          //   right: wallBBox.right + window.pageXOffset
-          // };
         
-          new PlainDraggable(target1, {
-            // },
-            // handle: document.querySelector('#fob-1 .draggable'),
-            onMove: function() { line.position(); },
-            handle: true,
-            zIndex: 1
-          });
-        
-          new PlainDraggable(target2, {
-            // handle: document.querySelector('#fob-2 .draggable'),
-            onMove: function() { line.position(); },
-            handle: true,
-            zIndex: 1
-          });
-        
-          line = new LeaderLine(target1, target2);
+          line = new LeaderLine(target, split);
+          line.setOptions({startSocket: 'right', endSocket: 'left'});
 
-
-    console.log('parent:', this.parentElement);
-    this.parentElement.addEventListener('dragover', AnimEvent.add(function() {
-      console.log(target1);
-      line.position();
-    }), false);
-
-        //   window.addEventListener('resize', AnimEvent.add(function() {
-        //     line.position();
-        //   }), false);
-
-
-        //   window.addEventListener('resize', listener, false);
-
+          const watchMoveThisSplit = this.parentElement.addEventListener('mousemove', AnimEvent.add(function() {
+                line.position();
+            }), false);
 
 
 
         }
-
-
-
-        // const target = event.target;
-        // console.log('this create split');
-
-
-
-//         if (target.matches('.create-split')) {
-//             let split = document.createElement('split-element')
-//             split.textContent = '123'
-//             console.log(`Split was clicked! ${this.id}`);
- 
-//             console.log('this: ', );
-// this.insertAdjacentElement('afterend', split)
-//             // this.insertAdjacentHTML("afterend", '<split-element>123</split-element>');
-//         }
-        // console.log('event: ', this.event.target);
-        // let target = event.target
-        // console.log('event: ', target.matches('.create-split'));
-        
     } 
 }
 
