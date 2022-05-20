@@ -3,7 +3,8 @@
 import FobElement from './elements/fob-elem.js';
 import SplitElement from './elements/split-elem.js';
 
-
+// let newSplit = new SplitElement.createSplit();
+// console.log('newSplit: ', newSplit);
 
 let objSplit = {
     FBT: {
@@ -150,55 +151,55 @@ let calcSignal = (inSignal) => {
     });
 };
 
-let idSplit = 1;
-calcContainer.addEventListener('click', (event) => {
-    const target = event.target;
+// let idSplit = 1;
+// calcContainer.addEventListener('click', (event) => {
+//     const target = event.target;
     
-    if (target.matches('.create-split')) {
-        let addSplit = createSplit(idSplit++);
-        target.insertAdjacentHTML('afterend', addSplit);
+//     if (target.matches('.create-split')) {
+//         let addSplit = createSplit(idSplit++);
+//         target.insertAdjacentHTML('afterend', addSplit);
 
-        target.textContent = '-';
-        target.classList.replace('create-split','remove-split');
-    } else if(target.matches('.remove-split')) {
-        let removeBtn = target;
-        let hasChainSplitter = removeBtn.nextElementSibling.querySelector('.remove-split');
+//         target.textContent = '-';
+//         target.classList.replace('create-split','remove-split');
+//     } else if(target.matches('.remove-split')) {
+//         let removeBtn = target;
+//         let hasChainSplitter = removeBtn.nextElementSibling.querySelector('.remove-split');
 
-        if (hasChainSplitter) {
-            (confirm('You want remove chain splitter?')) ? removeChainSplitter() : false ;
-        } else {
-            removeChainSplitter();
-        }
+//         if (hasChainSplitter) {
+//             (confirm('You want remove chain splitter?')) ? removeChainSplitter() : false ;
+//         } else {
+//             removeChainSplitter();
+//         }
 
-        function removeChainSplitter() {
-            removeBtn.nextElementSibling.remove();
-            removeBtn.textContent = '+';
-            removeBtn.classList.replace('remove-split','create-split');
-        }
-    }
-});
+//         function removeChainSplitter() {
+//             removeBtn.nextElementSibling.remove();
+//             removeBtn.textContent = '+';
+//             removeBtn.classList.replace('remove-split','create-split');
+//         }
+//     }
+// });
 
-let createSplit = (id) => {
-    return `
-    <div class="split" data-id="${id}" data-type="FBT" data-fiber="5_95">
-        <div class="row split-selected">
-          <select class="select-type">
-            <option value="FBT">FBT</option>
-            <option value="PLC">PLC</option>
-          </select>
-          <select class="select-fiber">
-            <option value="5_95">5/95</option>
-            <option value="10_90">10/90</option>
-            <option value="15_85">15/85</option>
-          </select>
-        </div>
-        <div class="vertical-center"><input class="in-split" name="in-signal" value="0" disabled=""></div>
-        <div class="column out-split">
-            <div class="row" data-id="${id}"><input class="out-signal" data-id="${id}" name="out-split" value="0" disabled><button class="btn-split create-split">+</button></div>
-            <div class="row" data-id="${id}"><input class="out-signal" data-id="${id}" name="out-split" value="0" disabled><button class="btn-split create-split">+</button></div>
-        </div>
-    </div>`;
-};
+// let createSplit = (id) => {
+//     return `
+//     <div class="split" data-id="${id}" data-type="FBT" data-fiber="5_95">
+//         <div class="row split-selected">
+//           <select class="select-type">
+//             <option value="FBT">FBT</option>
+//             <option value="PLC">PLC</option>
+//           </select>
+//           <select class="select-fiber">
+//             <option value="5_95">5/95</option>
+//             <option value="10_90">10/90</option>
+//             <option value="15_85">15/85</option>
+//           </select>
+//         </div>
+//         <div class="vertical-center"><input class="in-split" name="in-signal" value="0" disabled=""></div>
+//         <div class="column out-split">
+//             <div class="row" data-id="${id}"><input class="out-signal" data-id="${id}" name="out-split" value="0" disabled><button class="btn-split create-split">+</button></div>
+//             <div class="row" data-id="${id}"><input class="out-signal" data-id="${id}" name="out-split" value="0" disabled><button class="btn-split create-split">+</button></div>
+//         </div>
+//     </div>`;
+// };
 
 let setSplitType = () => {
     [...document.querySelectorAll('.split')].forEach((split) => {
@@ -234,11 +235,10 @@ window.addEventListener('load', function() {
       target2 = document.getElementById('fob-2'),
       wallBBox = document.getElementById('field').getBoundingClientRect(),
       line;
-  console.log(target1);
-    wallBBox = {
-      top: wallBBox.top + window.pageYOffset - target1.getBoundingClientRect().height,
-      right: wallBBox.right + window.pageXOffset
-    };
+    // wallBBox = {
+    //   top: wallBBox.top + window.pageYOffset - target1.getBoundingClientRect().height,
+    //   right: wallBBox.right + window.pageXOffset
+    // };
   
     new PlainDraggable(target1, {
       // onDrag: function(moveTo) {
@@ -253,8 +253,8 @@ window.addEventListener('load', function() {
       // },
       handle: document.querySelector('#fob-1 .draggable'),
       onMove: function() { line.position(); },
-      onMoveStart: function() { line.dash = {animation: true}; },
-      onDragEnd: function() { line.dash = false; },
+      // onMoveStart: function() { line.dash = {animation: true}; },
+      // onDragEnd: function() { line.dash = false; },
       
       // handle: true,
       zIndex: 1
@@ -263,13 +263,21 @@ window.addEventListener('load', function() {
     new PlainDraggable(target2, {
       handle: document.querySelector('#fob-2 .draggable'),
       onMove: function() { line.position(); },
-      onMoveStart: function() { line.dash = {animation: true}; },
-      onDragEnd: function() { line.dash = false; },
+      // onMoveStart: function() { line.dash = {animation: true}; },
+      // onDragEnd: function() { line.dash = false; },
       // handle: true,
       zIndex: 1
     });
   
-    line = new LeaderLine(target1, target2,
-      {startPlug: 'disc', endLabel: LeaderLine.pathLabel('ELEMENT', {fontFamily: 'Arial, sans-serif'})});
+    line = new LeaderLine(target1, target2);
+console.log(target1);
+
+
+
+// target1.addEventListener('mouseover', AnimEvent.add(function() {
+//       console.log(target1);
+//       line.position();
+//     }), false);
+
   
   });
