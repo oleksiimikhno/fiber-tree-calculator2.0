@@ -94,6 +94,7 @@ export default class FobElement extends HTMLElement {
             });
         
             line = new LeaderLine(target, fob.querySelector('[name="in-signal"]'));
+            line.setOptions({startSocket: 'right', endSocket: 'left'});
 
             const watchMoveThisFob = field.addEventListener('mousemove', AnimEvent.add(function() {
                 line.position();}), false);
