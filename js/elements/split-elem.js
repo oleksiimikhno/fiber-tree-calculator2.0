@@ -1,7 +1,11 @@
 let i = 1
 export default class SplitElement extends HTMLElement {
+    static #instances = 2;
+
     constructor(name) {
         super();
+        this.idSplit = SplitElement.#instances++;
+        this.rect = this.getBoundingClientRect(); 
         // this.i = i;
         // this.count++;
         // this.dataset.fobId = count;
@@ -12,7 +16,7 @@ export default class SplitElement extends HTMLElement {
     }
 
     connectedCallback() {
-        console.log('Split element in DOM');
+        console.log(`Split element in DOM ${this.idSplit}`);
         // this._render();
         this._addEventListeners();
     }
@@ -24,6 +28,7 @@ export default class SplitElement extends HTMLElement {
 
     _addEventListeners() {
         this.addEventListener('click', this.createSplit);
+        // this.addEventListener('click', this.hiddenLine);
     }
 
     createSplit(event) {
@@ -31,15 +36,12 @@ export default class SplitElement extends HTMLElement {
 
         if (target.matches('.create-split')) {
             let line;
-            i++;
             let split = document.createElement('split-element');
             split.classList.add('row', 'split');
-            split.id = `#split-${i}`;
-
-            var rect = this.getBoundingClientRect();
+            split.id = `split-${this.idSplit}`; 
             
             // this.style.marginBottom ='150px'
-
+console.log(this.rect);
             
             this.style.marginTop ='70px'
             split.style.transform = `translate(10px, 10px)`
@@ -72,17 +74,18 @@ export default class SplitElement extends HTMLElement {
             this.insertAdjacentElement('afterend', split);
 
         
-          line = new LeaderLine(target, split);
-          line.setOptions({startSocket: 'right', endSocket: 'left'});
-
-          const watchMoveThisSplit = this.parentElement.addEventListener('mousemove', AnimEvent.add(function() {
-                line.position();
+            line = new LeaderLine(target, split);
+            line.setOptions({startSocket: 'right', endSocket: 'left'});
+    
+            const watchMoveThisSplit = this.parentElement.addEventListener('mousemove', AnimEvent.add(function() {
+                    line.position();
             }), false);
 
 
 
         }
-    } 
+        
+    }
 }
 
   customElements.define("split-element", SplitElement);

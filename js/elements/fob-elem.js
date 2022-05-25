@@ -5,7 +5,7 @@ export default class FobElement extends HTMLElement {
         // this.dataset.fobId = count;
         // console.log(`Create element FOB ${this.dataset.fobId++}`);
         // this.firstSplit = 
-        this.mouseDownOnThis = false;
+        // this.mouseDownOnThis = false;
     }
 
     connectedCallback() {
@@ -33,13 +33,13 @@ export default class FobElement extends HTMLElement {
     }
 
     _addEventListeners() {
-        let ww = this.addEventListener('click', this.createFob);
-        console.log('ww: ', ww);
-        console.log(this.arrayLine);
+        this.addEventListener('click', this.createFob);
     }
 
     createFob(event) {
         const target = event.target;
+
+        console.log(this.rect);
         
         if (target.matches('.create-fob')) {
             let fob = document.createElement('fob-element'),
