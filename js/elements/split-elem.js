@@ -17,13 +17,17 @@ export default class SplitElement extends HTMLElement {
 
     connectedCallback() {
         console.log(`Split element in DOM ${this.idSplit}`);
-        // this._render();
+        this._render();
         this._addEventListeners();
     }
 
     disconnectedCallback() {
         console.log('remove Split element');
         this._removeEventListeners();
+    }
+
+    _render() {
+        this.calcSignal();
     }
 
     _addEventListeners() {
@@ -41,7 +45,6 @@ export default class SplitElement extends HTMLElement {
             split.id = `split-${this.idSplit}`; 
             
             // this.style.marginBottom ='150px'
-console.log(this.rect);
             
             this.style.marginTop ='70px'
             split.style.transform = `translate(10px, 10px)`
@@ -80,11 +83,19 @@ console.log(this.rect);
             const watchMoveThisSplit = this.parentElement.addEventListener('mousemove', AnimEvent.add(function() {
                     line.position();
             }), false);
-
-
-
         }
         
+    }
+
+
+    calcSignal() {
+        let incoming = this.querySelector('.in-split'),
+            outcoming = this.querySelectorAll('.out-signal');
+
+
+            
+            console.log('outcoming: ', outcoming);
+            console.log('incoming: ', incoming);
     }
 }
 
