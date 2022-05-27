@@ -1,5 +1,5 @@
 .fob {
-    position: relative;
+    position: absolute;
     display: inline-block;
     /* height: 50px;
     width: 50px; */
@@ -36,11 +36,12 @@
 
 /* temporarily */
 
-#fob-1 {
-    transform: translateY(150px);
+/* #fob-1 {
+    top: 50%;
+    transform: translateY(-50%);
 
-}
+} */
 
-#fob-2 {
+/* #fob-2 {
     transform: translate(150px, 150px);
-}
+} */
