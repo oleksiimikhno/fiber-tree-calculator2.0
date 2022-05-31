@@ -2,40 +2,41 @@
 
 import FobElement from './elements/fob-elem.js';
 import SplitElement from './elements/split-elem.js';
+import SplitType from './elements/split-type.js';
 
 // let newSplit = new SplitElement.createSplit();
 // console.log('newSplit: ', newSplit);
 
 let objSplit = {
     FBT: {
-        '5_95': {
+        '5/95': {
             5: 13.7, 95: 0.32
         },
-        '10_90': {
+        '10/90': {
             10: 10.08, 90: 0.49
         },
-        '15_85': {
+        '15/85': {
             15: 8.16, 85: 0.76
         },
-        '20_80': {
+        '20/80': {
             20: 7.11, 88: 1.06
         },
-        '25_75': {
+        '25/75': {
             15: 6.29, 85: 1.42
         },
-        '30_70': {
+        '30/70': {
             30: 5.39, 70: 1.56
         },
-        '35_65': {
+        '35/65': {
             35: 4.56, 65: 1.93
         },
-        '40_60': {
+        '40/60': {
             40: 4.01, 60: 2.34
         },
-        '45_55': {
+        '45/55': {
             45: 3.73, 55: 2.71
         },
-        '50_50': {
+        '50/50': {
             50: 3.17, 51: 3.19
         },
     },
@@ -47,23 +48,23 @@ let objSplit = {
     }
 }
 
-let resultSignal = document.querySelector('#result-signal');
-let calcContainer = document.querySelector('#field');
+// let resultSignal = document.querySelector('#result-signal');
+// let calcContainer = document.querySelector('#field');
 
-calcContainer.addEventListener('change', (event) => {
-    const target = event.target;
+// calcContainer.addEventListener('change', (event) => {
+//     const target = event.target;
 
-    let [selectType, selectFiber] = [target.matches('.select-type'), target.matches('.select-fiber')]
-////////////////Continue her
-    if (selectType || selectFiber) {
-        (selectType || selectFiber) ? changeSplitData(target, selectType) : changeSplitData(target, selectFiber);
-    };
-////////////////Continue her
-    let inSignal = document.querySelector('#in-signal[name="in-signal"]:valid').value;
-    calcSignal(inSignal);
+//     let [selectType, selectFiber] = [target.matches('.select-type'), target.matches('.select-fiber')]
+// ////////////////Continue her
+//     if (selectType || selectFiber) {
+//         (selectType || selectFiber) ? changeSplitData(target, selectType) : changeSplitData(target, selectFiber);
+//     };
+// ////////////////Continue her
+//     let inSignal = document.querySelector('#in-signal[name="in-signal"]:valid').value;
+//     calcSignal(inSignal);
 
 
-});
+// });
 
 let changeSplitData = (option, selectedType) => {
     let split = option.closest('.split');
