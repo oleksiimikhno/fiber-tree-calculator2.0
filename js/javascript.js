@@ -1,70 +1,36 @@
 'use strict';
-
 import FobElement from './elements/fob-elem.js';
 import SplitElement from './elements/split-elem.js';
 import SplitType from './elements/split-type.js';
 
-// let newSplit = new SplitElement.createSplit();
-// console.log('newSplit: ', newSplit);
+function isSpecialNumber(n) {
+    let str = `${n}`;
+    let special = false;
 
-let objSplit = {
-    FBT: {
-        '5/95': {
-            5: 13.7, 95: 0.32
-        },
-        '10/90': {
-            10: 10.08, 90: 0.49
-        },
-        '15/85': {
-            15: 8.16, 85: 0.76
-        },
-        '20/80': {
-            20: 7.11, 88: 1.06
-        },
-        '25/75': {
-            15: 6.29, 85: 1.42
-        },
-        '30/70': {
-            30: 5.39, 70: 1.56
-        },
-        '35/65': {
-            35: 4.56, 65: 1.93
-        },
-        '40/60': {
-            40: 4.01, 60: 2.34
-        },
-        '45/55': {
-            45: 3.73, 55: 2.71
-        },
-        '50/50': {
-            50: 3.17, 51: 3.19
-        },
-    },
-    PLC: {
-        '1x2': 4.3,
-        '1x4': 7.4,
-        '1x8': 10.7,
-        '1x16': 13.9
+    for (let i = 0; i < str.length; i++) {
+
+        if (+str[i] > 5) return 'NOT!!'
+
+        special = (+str[i] <= 5 ) ? true : false;
+
+    }
+
+    if (special) {
+        return 'Special!!'
     }
 }
 
-// let resultSignal = document.querySelector('#result-signal');
-// let calcContainer = document.querySelector('#field');
+// === ['ab', 'c_'];
+console.log('splitString: ', isSpecialNumber(6));
 
-// calcContainer.addEventListener('change', (event) => {
-//     const target = event.target;
-
-//     let [selectType, selectFiber] = [target.matches('.select-type'), target.matches('.select-fiber')]
-// ////////////////Continue her
-//     if (selectType || selectFiber) {
-//         (selectType || selectFiber) ? changeSplitData(target, selectType) : changeSplitData(target, selectFiber);
-//     };
-// ////////////////Continue her
-//     let inSignal = document.querySelector('#in-signal[name="in-signal"]:valid').value;
-//     calcSignal(inSignal);
+// [ 'ROBOT',
+//   'OBOTR',
+//   'BOTRO',
+//   'OTROB',
+//   'TROBO' 
 
 
-// });
+
 
 let changeSplitData = (option, selectedType) => {
     let split = option.closest('.split');
