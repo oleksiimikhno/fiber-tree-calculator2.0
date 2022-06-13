@@ -65,7 +65,7 @@ export default class FobElement extends HTMLElement {
                         split.classList.add('row', 'split');
                         
                         split.innerHTML  = 
-                            `<split-type class="row split-selected"></split-type>
+                            `<split-type-select class="row split-selected"></split-type-select>
                             <div class="vertical-center"><input class="in-split" name="in-signal" value="0"></div>
                             <div class="column out-split">
                                 <div class="split-out row" data-id="0">

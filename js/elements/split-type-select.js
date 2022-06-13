@@ -95,4 +95,4 @@ export default class SplitTypeElement extends HTMLElement {
     }
 }
 
-customElements.define('split-type', SplitTypeElement);
+customElements.define('split-type-select', SplitTypeElement);
