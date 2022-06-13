@@ -50,17 +50,7 @@ export default class SplitElement extends HTMLElement {
             split.style.transform = `translate(10px, 10px)`
 
             split.innerHTML = 
-                `<split-type class="row split-selected">
-                    <select class="select-type">
-                        <option value="FBT">FBT</option>
-                        <option value="PLC">PLC</option>
-                    </select>
-                    <select class="select-fiber">
-                        <option value="5_95">5/95</option>
-                        <option value="10_90">10/90</option>
-                        <option value="15_85">15/85</option>
-                    </select>
-                </split-type>
+                `<split-type class="row split-selected"></split-type>
                 <div class="vertical-center"><input id="in-signal" class="in-split" name="in-signal" value="0"></div>
                 <div class="column out-split">
                     <div class="split-out row" data-id="0">
