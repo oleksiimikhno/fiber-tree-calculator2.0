@@ -35,6 +35,14 @@ export default class SplitElement extends HTMLElement {
         // this.addEventListener('click', this.hiddenLine);
     }
 
+// static get observedAttributes() { // (3)
+//     return ['datetime', 'year', 'month', 'day', 'hour', 'minute', 'second', 'time-zone-name'];
+// }
+
+// attributeChangedCallback(name, oldValue, newValue) { // (4)
+//     this.render();
+// }
+
     createSplit(event) {
         const target = event.target;
 
