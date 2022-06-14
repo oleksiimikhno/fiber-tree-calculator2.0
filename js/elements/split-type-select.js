@@ -1,8 +1,8 @@
 import objSplit from '../split-table-info/table.js';
 
 
-export default class SplitTypeElement extends HTMLElement {
-    constructor(name) {
+export default class SplitTypeSelectElement extends HTMLElement {
+    constructor() {
         super();
         this.selects;
         // this.objSplit = require('../split-table-info/table.js');
@@ -11,6 +11,7 @@ export default class SplitTypeElement extends HTMLElement {
     connectedCallback() {
         this._render();
         this._addEventListeners();
+        
     }
 
     disconnectedCallback() {
@@ -30,23 +31,18 @@ export default class SplitTypeElement extends HTMLElement {
 
     createSelectSplit() {
         let arrayOption = [];
+        const arraySelectName = ['type', 'fiber']
         const selectFrag = document.createDocumentFragment();
-        // let getOptions = (nameOption = false) => (nameOption) ? Object.keys(objSplit[nameOption]) : Object.keys(objSplit);
 
-        for (let i = 0; i < 2; i++) {
+        for (let i = 0; i < arraySelectName.length; i++) {
             let select = document.createElement('select');
-            
-            if (i == 0) {
-                select.classList.add('select-type');
-                arrayOption = this.getOptions();
+            select.classList.add(`select-${arraySelectName[i]}`);
+        
+            let type = (i == 0) ? '' : 'FBT';
+            arrayOption = this.getOptions(type);
+            select.append(this.createOptions(arrayOption));
 
-                select.append(this.createOptions(arrayOption));
-            } else {
-                select.classList.add('select-fiber');
-                arrayOption = this.getOptions('FBT');
-                
-                select.append(this.createOptions(arrayOption));
-            }
+            this.setAttributeSelected(`${arraySelectName[i]}`, arrayOption[0]);
 
             selectFrag.appendChild(select);
         }
@@ -76,8 +72,11 @@ export default class SplitTypeElement extends HTMLElement {
         element.innerHTML = '';
     }
 
+    setAttributeSelected(name, value) {
+        this.parentNode.setAttribute(name, value);
+    }
+
     changeSplitData(event) {
-        this.getOptions()
         const target = event.target;
         
         if (target.classList.contains('select-type')) {
@@ -86,13 +85,15 @@ export default class SplitTypeElement extends HTMLElement {
 
             let arrayOption = this.getOptions(target.value);
             fiberElement.append(this.createOptions(arrayOption));
+
+            this.setAttributeSelected("type", target.value);
         }
 
         if (target.classList.contains('select-fiber')) {
+            this.setAttributeSelected("fiber", target.value);
             console.log('select-fiber');
         }
-        
     }
 }
 
-customElements.define('split-type-select', SplitTypeElement);
+customElements.define('split-type-select', SplitTypeSelectElement);
