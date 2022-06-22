@@ -1,3 +1,5 @@
+import objSplit from '../split-table-info/table.js';
+
 let i = 1
 export default class SplitElement extends HTMLElement {
     static #instances = 2;
@@ -26,6 +28,17 @@ export default class SplitElement extends HTMLElement {
         this._removeEventListeners();
     }
 
+    static get observedAttributes() {
+        return ['type', 'fiber'];
+    }
+    
+    attributeChangedCallback(name, oldValue, newValue) {
+        // console.log('newValue: ', newValue);
+        // console.log('oldValue: ', oldValue);
+        // console.log('name: ', name);
+        this._render();
+    }
+
     _render() {
         this.calcSignal();
     }
@@ -34,14 +47,6 @@ export default class SplitElement extends HTMLElement {
         this.addEventListener('click', this.createSplit);
         // this.addEventListener('click', this.hiddenLine);
     }
-
-// static get observedAttributes() { // (3)
-//     return ['datetime', 'year', 'month', 'day', 'hour', 'minute', 'second', 'time-zone-name'];
-// }
-
-// attributeChangedCallback(name, oldValue, newValue) { // (4)
-//     this.render();
-// }
 
     createSplit(event) {
         const target = event.target;
@@ -82,18 +87,34 @@ export default class SplitElement extends HTMLElement {
                     line.position();
             }), false);
         }
-        
     }
-
 
     calcSignal() {
         let incoming = this.querySelector('.in-split'),
-            outcoming = this.querySelectorAll('.out-signal');
-
-
+            arrayOutcomingSignal = this.querySelectorAll('.out-signal'),
+            type = this.getAttribute('type'),
+            fiber = this.getAttribute('fiber');
             
-            console.log('outcoming: ', outcoming);
-            console.log('incoming: ', incoming);
+        if (objSplit[type] == undefined || objSplit[type][fiber] == undefined) return;
+
+        let result = 0;
+        if (type === 'FBT') {
+            let i = 0;
+            
+            for (let splitSignal of Object.entries(objSplit[type][fiber])) {
+
+                result = incoming.value - splitSignal[1];
+                arrayOutcomingSignal[i].value = result.toFixed(2);
+
+                i++;
+            }
+        } else {
+            result = incoming.value - objSplit[type][fiber];
+
+            arrayOutcomingSignal.forEach(item => {
+                item.value = result.toFixed(2);
+            });
+        }
     }
 }
 
