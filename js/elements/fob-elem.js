@@ -4,7 +4,7 @@ export default class FobElement extends HTMLElement {
     constructor(name) {
         super();
         this.idFob = FobElement.#instances++;
-        this.rect = this.getBoundingClientRect(); 
+        this.rect = this.getBoundingClientRect();
         // this.count++;
         // this.dataset.fobId = count;
         // console.log(`Create element FOB ${this.dataset.fobId++}`);
@@ -41,15 +41,15 @@ export default class FobElement extends HTMLElement {
 
     _addEventListeners() {
         this.addEventListener('click', this.createFob);
-
-    } 
+        console.log(this.createFob);
+    }
  
     createFob(event) {
         const target = event.target;
         
         if (target.matches('.create-fob')) {
 
-            function newFob(id) {
+            function createNewFob(id) {
                 let fobElem = document.createElement('fob-element'),
                     fobHead = document.createElement('div');
 
@@ -91,15 +91,15 @@ export default class FobElement extends HTMLElement {
                     return fobElem;
             }
 
-            function createLine() {
+            function createLine(targetnewFob) {
                 let line;
-                new PlainDraggable(fob, {
-                    handle: fob.querySelector('.draggable'),
+                new PlainDraggable(newFob, {
+                    handle: newFob.querySelector('.draggable'),
                     onMove: function() { line.position(); },
                     zIndex: 1
                 });
             
-                line = new LeaderLine(target, fob.querySelector('[name="in-signal"]'));
+                line = new LeaderLine(target, targetnewFob);
                 line.setOptions({startSocket: 'right', endSocket: 'left'});
     
                 const updatePisitionThisFob = field.addEventListener('mousemove', AnimEvent.add(function() {
@@ -122,13 +122,34 @@ export default class FobElement extends HTMLElement {
                 let position = getTranslateXY(thisFob),
                     widthThisFob = thisFob.offsetWidth + 40;
 
-                fob.style.transform = `translate(${position.translateX + widthThisFob}px, ${position.translateY}px)`;
+                newFob.style.transform = `translate(${position.translateX + widthThisFob}px, ${position.translateY}px)`;
             }
 
-            let fob = newFob(this.idFob);
-            field.append(fob);
+            function updateSignal(inputSignal) {
+                let parent = target.closest('.split-out');
+                let getOutSignalElement = parent.querySelector('.out-signal');
+                inputSignal.value = getOutSignalElement.value;
+    
+                getOutSignalElement.addEventListener('change', (event) => {
+                    const target = event.target;
+                    inputSignal.value = target.value;
+    
+                    inputSignal.dispatchEvent(new Event('change'));
+                })
+            }
+
+            let newFob = createNewFob(this.idFob);
+            let incomongElem = newFob.querySelector('[name="in-signal"]');
+            
+            field.append(newFob);
             setPosition(this);
-            createLine();
+            createLine(incomongElem);
+            updateSignal(incomongElem);
+
+
+           
+
+
         }
     }
   }
