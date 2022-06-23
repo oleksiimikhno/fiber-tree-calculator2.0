@@ -7,7 +7,7 @@ export default class SplitElement extends HTMLElement {
     constructor(name) {
         super();
         this.idSplit = SplitElement.#instances++;
-        this.rect = this.getBoundingClientRect(); 
+        this.rect = this.getBoundingClientRect();
         // this.i = i;
         // this.count++;
         // this.dataset.fobId = count;
@@ -40,12 +40,20 @@ export default class SplitElement extends HTMLElement {
     }
 
     _render() {
-        this.calcSignal();
+
+        setTimeout(() => {
+            this.calcSignal();
+        }, 0);
+        
     }
 
     _addEventListeners() {
         this.addEventListener('click', this.createSplit);
-        // this.addEventListener('click', this.hiddenLine);
+        this.addEventListener('change', this.calcSignal);
+        // this.querySelector('[name="in-signal"]').addEventListener('change', this.calcSignal);
+        this.querySelector('[name="in-signal"]').addEventListener('change', (e) =>{
+            this.calcSignal()
+        });
     }
 
     createSplit(event) {
@@ -100,12 +108,12 @@ export default class SplitElement extends HTMLElement {
         let result = 0;
         if (type === 'FBT') {
             let i = 0;
-            
+
             for (let splitSignal of Object.entries(objSplit[type][fiber])) {
 
                 result = incoming.value - splitSignal[1];
                 arrayOutcomingSignal[i].value = result.toFixed(2);
-
+                arrayOutcomingSignal[i].dispatchEvent(new Event('change'));
                 i++;
             }
         } else {
@@ -113,6 +121,7 @@ export default class SplitElement extends HTMLElement {
 
             arrayOutcomingSignal.forEach(item => {
                 item.value = result.toFixed(2);
+                item.dispatchEvent(new Event('change'));
             });
         }
     }
