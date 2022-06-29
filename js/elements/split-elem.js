@@ -60,18 +60,12 @@ export default class SplitElement extends HTMLElement {
         const target = event.target;
 
         if (target.matches('.create-split')) {
-            let line;
             let split = document.createElement('split-element');
             split.classList.add('row', 'split');
             split.id = `split-${this.idSplit}`; 
-            
-            // this.style.marginBottom ='150px'
-            
-            this.style.marginTop ='70px'
-            split.style.transform = `translate(10px, 10px)`
 
             split.innerHTML = 
-                `<split-type-select class="row split-selected"></split-type-select>
+                `<split-type-select class="row split-selected"><div class="draggable">123</div></split-type-select>
                 <div class="vertical-center"><input id="in-signal" class="in-split" name="in-signal" value="0"></div>
                 <div class="column out-split">
                     <div class="split-out row" data-id="0">
@@ -87,18 +81,8 @@ export default class SplitElement extends HTMLElement {
                 </div>`;
             this.insertAdjacentElement('afterend', split);
 
-        
-            line = new LeaderLine(target, split);
-            line.setOptions({startSocket: 'right', endSocket: 'left'});
-    
-            const watchMoveThisSplit = this.parentElement.addEventListener('mousemove', AnimEvent.add(function() {
-                    line.position();
-            }), false);
-
-
             function updateSignal(split) {
                 let inputSignal = split.querySelector('[name="in-signal"]');
-                console.log('inputSignal: ', inputSignal);
 
                 let parent = target.closest('.split-out');
                 let getOutSignalElement = parent.querySelector('.out-signal');
@@ -113,7 +97,26 @@ export default class SplitElement extends HTMLElement {
             }
 
             updateSignal(split);
+            
+            this.createLine(target, split);
         }
+    }
+
+    createLine(target, split) {
+        let line;
+
+        new PlainDraggable(this, {
+            handle: this.querySelector('.draggable'),
+            onMove: function() { line.position(); },
+            zIndex: 1 
+        });
+
+        line = new LeaderLine(target, split);
+        line.setOptions({startSocket: 'right', endSocket: 'left'});
+
+        const watchMoveThisSplit = this.parentElement.addEventListener('mousemove', AnimEvent.add(function() {
+            line.position();
+        }), false);
     }
 
     calcSignal() {
