@@ -33,6 +33,27 @@
     border-top-right-radius: 10px;
     padding: 5px 15px;
 }
+.grid-field{
+    /* position: relative; */
+    min-height: 420px;
+    min-width: 160px;
+    width: calc(160px * 4);
+    /* grid-template-columns: repeat(auto-fit, minmax(1fr, 1fr)); */
+    /* 
+     */
+     /* grid-template-columns: repeat(3, 1fr);
+     grid-template-rows: repeat(5, 1fr) */
+    /* grid-template-columns: min-content(1fr, auto); */
+}
+
+.grid-field > .split:first-child{
+    position: absolute;
+    top: 50%;
+    /* left: 50%; */
+    transform: translateY(-30%); 
+    /* transform: translateX(-50%); By this.. */
+    
+}
 
 /* temporarily */
 

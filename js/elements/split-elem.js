@@ -40,11 +40,25 @@ export default class SplitElement extends HTMLElement {
     }
 
     _render() {
-
         setTimeout(() => {
             this.calcSignal();
         }, 0);
-        
+
+        setTimeout(() => {
+            const dragElem = this.querySelector('.draggable');
+
+            if (!dragElem) return;
+
+            this.drag = new PlainDraggable(this, {
+                handle: dragElem,
+                // onMove: function() { line.position(); },
+                // onMoveStart: function() { line.dash = {animation: true}; },
+                // onDragEnd: function() { line.dash = false; },
+                // handle: true,
+                
+                zIndex: 1
+              });
+        }, 0);
     }
 
     _addEventListeners() {
@@ -65,7 +79,7 @@ export default class SplitElement extends HTMLElement {
             split.id = `split-${this.idSplit}`; 
 
             split.innerHTML = 
-                `<split-type-select class="row split-selected"><div class="draggable">123</div></split-type-select>
+                `<split-type-select class="row split-selected"></split-type-select>
                 <div class="vertical-center"><input id="in-signal" class="in-split" name="in-signal" value="0"></div>
                 <div class="column out-split">
                     <div class="split-out row" data-id="0">
@@ -96,20 +110,36 @@ export default class SplitElement extends HTMLElement {
                 })
             }
 
-            updateSignal(split);
+            const selectWrapper = split.querySelector('.split-selected');
+            this.createDraggableElement(selectWrapper);
             
+
+            updateSignal(split);
+
             this.createLine(target, split);
         }
+    }
+
+    createDraggableElement(selectWrapper) {
+        const drag = document.createElement('div');
+        drag.classList.add('draggable');
+        drag.textContent = '';
+        selectWrapper.append(drag);
     }
 
     createLine(target, split) {
         let line;
 
-        new PlainDraggable(this, {
-            handle: this.querySelector('.draggable'),
-            onMove: function() { line.position(); },
-            zIndex: 1 
-        });
+        const dragElem = this.querySelector('.draggable');
+        // console.log('dragElem: ', dragElem);
+
+        // if (!dragElem) return;
+
+        // new PlainDraggable(this, {
+        //     handle: dragElem,
+        //     onMove: function() { line.position(); },
+        //     zIndex: 1 
+        // });
 
         line = new LeaderLine(target, split);
         line.setOptions({startSocket: 'right', endSocket: 'left'});

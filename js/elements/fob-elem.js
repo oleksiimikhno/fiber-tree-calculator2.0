@@ -33,10 +33,7 @@ export default class FobElement extends HTMLElement {
             
             zIndex: 1
           });
-
         // createFirstSplit();
-
-
     }
 
     _addEventListeners() {

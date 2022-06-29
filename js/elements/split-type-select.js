@@ -77,7 +77,6 @@ export default class SplitTypeSelectElement extends HTMLElement {
 
             let arrayOption = this.getOptions(target.value);
             fiberElement.append(this.createOptions(arrayOption));
-
             
             this.setAttributeSelected('type', target.value);
             this.setAttributeSelected('fiber', Object.entries(objSplit[target.value])[0][0]);
