@@ -41,7 +41,6 @@ export default class FobElement extends HTMLElement {
 
     _addEventListeners() {
         this.addEventListener('click', this.createFob);
-        console.log(this.createFob);
     }
  
     createFob(event) {
@@ -51,12 +50,15 @@ export default class FobElement extends HTMLElement {
 
             function createNewFob(id) {
                 let fobElem = document.createElement('fob-element'),
-                    fobHead = document.createElement('div');
+                    fobHead = document.createElement('div'),
+                    fobGrid = document.createElement('div');
 
                     fobElem.classList.add('fob');
                     fobHead.classList.add('fob-head', 'draggable');
                     fobHead.textContent = `Drag This ${id}`;
                     fobElem.append(fobHead);
+                    fobGrid.classList.add('grid-field');
+                    fobElem.append(fobGrid);
 
                     // let fob = newFob(this.idFob);
             
@@ -86,7 +88,7 @@ export default class FobElement extends HTMLElement {
                     let split = createFirstSplit();
 
         
-                    fobElem.insertAdjacentElement('beforeend', split);
+                    fobGrid.insertAdjacentElement('beforeend', split);
 
                     return fobElem;
             }
@@ -145,13 +147,8 @@ export default class FobElement extends HTMLElement {
             setPosition(this);
             createLine(incomongElem);
             updateSignal(incomongElem);
-
-
-           
-
-
         }
     }
-  }
+}
 
 customElements.define('fob-element', FobElement);
