@@ -94,6 +94,25 @@ export default class SplitElement extends HTMLElement {
             const watchMoveThisSplit = this.parentElement.addEventListener('mousemove', AnimEvent.add(function() {
                     line.position();
             }), false);
+
+
+            function updateSignal(split) {
+                let inputSignal = split.querySelector('[name="in-signal"]');
+                console.log('inputSignal: ', inputSignal);
+
+                let parent = target.closest('.split-out');
+                let getOutSignalElement = parent.querySelector('.out-signal');
+                inputSignal.value = getOutSignalElement.value;
+    
+                getOutSignalElement.addEventListener('change', (event) => {
+                    const target = event.target;
+                    inputSignal.value = target.value;
+    
+                    inputSignal.dispatchEvent(new Event('change'));
+                })
+            }
+
+            updateSignal(split);
         }
     }
 
