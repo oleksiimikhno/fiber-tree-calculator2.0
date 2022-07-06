@@ -58,7 +58,10 @@ export default class SplitElement extends HTMLElement {
                 
                 zIndex: 1
               });
+              
         }, 0);
+
+        
     }
 
     _addEventListeners() {
@@ -117,7 +120,36 @@ export default class SplitElement extends HTMLElement {
             updateSignal(split);
 
             this.createLine(target, split);
+            split.addEventListener('mousemove', (event) => (this.onMovingSplit(event, split)));
+
+
+
+
+            let fob = split.closest('.fob');
+
+
+            fob.addEventListener('mousemove', (event) => (this.onResizeFob(event, fob, split)));
+            // function setPosition(thisFob) {
+            
+            //     function getTranslateXY(element) {
+            //         const style = window.getComputedStyle(element)
+            //         const matrix = new DOMMatrixReadOnly(style.transform)
+            //         return {
+            //             translateX: matrix.m41,
+            //             translateY: matrix.m42
+            //         }
+            //     }
+
+            //     let position = getTranslateXY(thisFob),
+            //         widthThisFob = thisFob.offsetWidth + 40;
+
+            //     newFob.style.transform = `translate(${position.translateX + widthThisFob}px, ${position.translateY}px)`;
+            // }
+
+            // setPosition(split)
         }
+
+        
     }
 
     createDraggableElement(selectWrapper) {
@@ -130,7 +162,9 @@ export default class SplitElement extends HTMLElement {
     createLine(target, split) {
         let line;
 
-        const dragElem = this.querySelector('.draggable');
+        const rect = this.getBoundingClientRect()
+        console.log('rect: ', rect.top);
+        // const dragElem = this.querySelector('.draggable');
         // console.log('dragElem: ', dragElem);
 
         // if (!dragElem) return;
@@ -143,8 +177,9 @@ export default class SplitElement extends HTMLElement {
 
         line = new LeaderLine(target, split);
         line.setOptions({startSocket: 'right', endSocket: 'left'});
+        line.setOptions({path: 'grid'});
 
-        const watchMoveThisSplit = this.parentElement.addEventListener('mousemove', AnimEvent.add(function() {
+        const onMoveThisSplit = this.parentElement.addEventListener('mousemove', AnimEvent.add(function() {
             line.position();
         }), false);
     }
@@ -176,6 +211,105 @@ export default class SplitElement extends HTMLElement {
                 item.dispatchEvent(new Event('change'));
             });
         }
+    }
+
+    onMovingSplit(event, elem) {
+        let parent = elem.closest('.fob')
+        let rectFob = parent.getBoundingClientRect();
+        let rectSplit = elem.getBoundingClientRect();
+
+        if ((rectFob.right - 30) < rectSplit.right) {
+
+            parent.style.width = `${parent.offsetWidth + 10}px`
+        }
+
+        if ((rectFob.bottom - 30) < rectSplit.bottom) {
+
+            parent.style.height = `${parent.offsetHeight + 10}px`
+        }
+    }
+
+    onResizeFob(event, fob, split) {
+
+        let rectFob = fob.getBoundingClientRect();
+        let rectSplit = split.getBoundingClientRect();
+        
+        if ((rectFob.right - 30) < rectSplit.right) {
+            
+
+            setPosition(split, 'right');
+            // parent.style.width = `${parent.offsetWidth + 10}px`
+        }
+
+        if ((rectFob.bottom - 30) < rectSplit.bottom) {
+            setPosition(split, 'bottom');
+            // parent.style.height = `${parent.offsetHeight + 10}px`
+
+            
+        }
+
+
+
+        // function setPosition(elem, translateXY) {
+
+        //     let right, bottom = 0;
+            
+        //     function getTranslateXY(element) {
+        //         const style = window.getComputedStyle(element)
+        //         const matrix = new DOMMatrixReadOnly(style.transform)
+        //         return {
+        //             translateX: matrix.m41,
+        //             translateY: matrix.m42
+        //         }
+        //     }
+
+        //     let position = getTranslateXY(elem);
+        //         // widthThisFob = thielemsFob.offsetWidth + 40;
+
+        //     function positionXY(translateXY) {
+        //         switch(translateXY) {
+        //             case 'right': 
+        //                 return right = 10;
+        //             case 'bottom': 
+        //                 return bottom = 10;
+        //         }
+        //     }
+
+        //     console.log(positionXY(translateXY));
+
+        //     elem.style.transform = `translate(${position.translateX - 1}px, ${position.translateY}px)`;
+        // }
+
+
+        function setPosition(elem, translateXY) {
+            let right, bottom = 0;
+            
+            function getTranslateXY(element) {
+                const style = window.getComputedStyle(element)
+                const matrix = new DOMMatrixReadOnly(style.transform)
+                return {
+                    translateX: matrix.m41,
+                    translateY: matrix.m42
+                }
+            }
+
+            let position = getTranslateXY(elem);
+                // widthThisFob = thielemsFob.offsetWidth + 40;
+
+
+            function positionXY(translateXY) {
+                switch(translateXY) {
+                    case 'right': 
+                        return right = 10;
+                    case 'bottom': 
+                        return bottom = 10;
+                }
+            }
+
+                elem.style.transform = `translate(${position.translateX - positionXY(translateXY)}px, ${position.translateY - positionXY(translateXY)}px)`;
+        }
+
+        
     }
 }
 
