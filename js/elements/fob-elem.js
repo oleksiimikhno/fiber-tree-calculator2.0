@@ -33,11 +33,21 @@ export default class FobElement extends HTMLElement {
             
             zIndex: 1
           });
+
+
+
+          
         // createFirstSplit();
     }
 
     _addEventListeners() {
         this.addEventListener('click', this.createFob);
+        this.querySelector('.draggable').addEventListener('mousemove', this.updateSplitLinePosition);
+    }
+
+    updateSplitLinePosition(event) {
+        const fob = event.target.closest('.fob');
+        fob.querySelector('.grid-field').dispatchEvent(new Event('mousemove'));
     }
  
     createFob(event) {
@@ -92,7 +102,7 @@ export default class FobElement extends HTMLElement {
 
             function createLine(targetnewFob) {
                 let line;
-                new PlainDraggable(newFob, {
+                let drag = new PlainDraggable(newFob, {
                     handle: newFob.querySelector('.draggable'),
                     onMove: function() { line.position(); },
                     zIndex: 1
@@ -100,6 +110,7 @@ export default class FobElement extends HTMLElement {
             
                 line = new LeaderLine(target, targetnewFob);
                 line.setOptions({startSocket: 'right', endSocket: 'left'});
+                line.setOptions({color: '#3197fd'});
     
                 const updatePisitionThisFob = field.addEventListener('mousemove', AnimEvent.add(function() {
                     line.position();
