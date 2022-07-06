@@ -1,6 +1,5 @@
 import objSplit from '../split-table-info/table.js';
 
-let i = 1
 export default class SplitElement extends HTMLElement {
     static #instances = 2;
 
@@ -8,6 +7,7 @@ export default class SplitElement extends HTMLElement {
         super();
         this.idSplit = SplitElement.#instances++;
         this.rect = this.getBoundingClientRect();
+        this.splitLine;
         // this.i = i;
         // this.count++;
         // this.dataset.fobId = count;
@@ -40,29 +40,8 @@ export default class SplitElement extends HTMLElement {
     }
 
     _render() {
-        setTimeout(() => {
-            this.calcSignal();
-        }, 0);
-
-        setTimeout(() => {
-
-            // this.reCalcPositionSplit(this);
-            const dragElem = this.querySelector('.draggable');
-
-            if (!dragElem) return;
-
-            this.drag = new PlainDraggable(this, {
-                handle: dragElem,
-                // onMove: function() { line.position(); },
-                // onMoveStart: function() { line.dash = {animation: true}; },
-                // onDragEnd: function() { line.dash = false; },
-                // handle: true,
-                
-                zIndex: 1
-              });
-        }, 0);
-
-        
+        setTimeout(() => this.calcSignal(), 0);
+        setTimeout(() => this.onSplitPosition(this), 0);
     }
 
     _addEventListeners() {
@@ -72,8 +51,6 @@ export default class SplitElement extends HTMLElement {
         this.querySelector('[name="in-signal"]').addEventListener('change', (e) =>{
             this.calcSignal()
         });
-
-        console.log(this);
     }
 
     createSplit(event) {
@@ -82,7 +59,7 @@ export default class SplitElement extends HTMLElement {
         if (target.matches('.create-split')) {
             let split = document.createElement('split-element');
             split.classList.add('row', 'split');
-            split.id = `split-${this.idSplit}`; 
+            split.id = `split-${this.idSplit}`;
 
             split.innerHTML = 
                 `<split-type-select class="row split-selected"></split-type-select>
@@ -118,23 +95,19 @@ export default class SplitElement extends HTMLElement {
 
             const selectWrapper = split.querySelector('.split-selected');
             this.createDraggableElement(selectWrapper);
-            
 
-            updateSignal(split);
-
-            this.createLine(target, split);
             split.addEventListener('mousemove', (event) => (this.onMovingSplit(event, split)));
 
 
-
+            const position = this.getTranslateXY(target.closest('.split'));
+            split.style.transform = `translate(${position.translateX + 200}px, ${position.translateY}px)`;
 
             let fob = split.closest('.fob');
-
-
             fob.addEventListener('mousemove', (event) => (this.onResizeFob(event, fob, split)));
-        }
 
-        
+            updateSignal(split);
+            this.createLine(target, split);
+        }
     }
 
     createDraggableElement(selectWrapper) {
@@ -148,6 +121,8 @@ export default class SplitElement extends HTMLElement {
         let line = new LeaderLine(target, split);
         line.setOptions({startSocket: 'auto', endSocket: 'left'});
         line.setOptions({path: 'grid'});
+
+        this.splitLine = line;
 
         const onMoveThisSplit = this.parentElement.addEventListener('mousemove', AnimEvent.add(function() {
             line.position();
@@ -183,67 +158,60 @@ export default class SplitElement extends HTMLElement {
         }
     }
 
-    onMovingSplit(event, elem) {
-        let parent = elem.closest('.fob'),
-            rectFob = parent.getBoundingClientRect(),
-            rectSplit = elem.getBoundingClientRect();
+    onMovingSplit(event, split) {
+        let fob = split.closest('.fob'),
+            rectFob = fob.getBoundingClientRect(),
+            rectSplit = split.getBoundingClientRect();
 
         if ((rectFob.right - 30) < rectSplit.right) {
 
-            parent.style.width = `${parent.offsetWidth + 10}px`
+            fob.style.width = `${fob.offsetWidth + 10}px`
         }
 
         if ((rectFob.bottom - 30) < rectSplit.bottom) {
 
-            parent.style.height = `${parent.offsetHeight + 10}px`
+            fob.style.height = `${fob.offsetHeight + 10}px`
         }
     }
 
     onResizeFob(event, fob, split) {
         let rectFob = fob.getBoundingClientRect();
         let rectSplit = split.getBoundingClientRect();
+        const getSplitPosition =  this.getTranslateXY(split);
+        
         
         if ((rectFob.right - 30) < rectSplit.right) {
-            setPosition(split, 'right');
-            this.reCalcPositionSplit(split);
+            setPosition('right');
+            this.onSplitPosition(split);
+            this.splitLine.position();
         }
 
         if ((rectFob.bottom - 30) < rectSplit.bottom) {
-            setPosition(split, 'bottom');
-            this.reCalcPositionSplit(split);
+            setPosition('bottom');
+            this.onSplitPosition(split);
+            this.splitLine.position();
         }
 
-        function setPosition(elem, translateXY) {
-            let right = 10,
-                bottom = 10;
-            
-            function getTranslateXY(element) {
-                const style = window.getComputedStyle(element)
-                const matrix = new DOMMatrixReadOnly(style.transform)
-                return {
-                    translateX: matrix.m41,
-                    translateY: matrix.m42
-                }
-            }
+        function setPosition(translateXY) {
+            let space = 10;
 
             function setPositionXY(translateXY) {
-                let position = getTranslateXY(elem);
+                let position = getSplitPosition;
 
                 switch(translateXY) {
                     case 'right': 
-                        return `translate(${position.translateX - right}px, ${position.translateY}px)`
+                        return `translate(${position.translateX - space}px, ${position.translateY}px)`
                     case 'bottom': 
-                        return `translate(${position.translateX}px, ${position.translateY- bottom}px)`;
+                        return `translate(${position.translateX}px, ${position.translateY- space}px)`;
                 }
             }
 
-            elem.style.transform = setPositionXY(translateXY);
+            split.style.transform = setPositionXY(translateXY);
         }
-
         
     }
 
-    reCalcPositionSplit(split) {
+    onSplitPosition(split) {
         const dragElem = split.querySelector('.draggable');
 
         if (!dragElem) return;
@@ -254,6 +222,15 @@ export default class SplitElement extends HTMLElement {
         });
 
         draggable.position();
+    }
+
+    getTranslateXY(element) {
+        const style = window.getComputedStyle(element)
+        const matrix = new DOMMatrixReadOnly(style.transform)
+        return {
+            translateX: matrix.m41,
+            translateY: matrix.m42
+        }
     }
 }
 
