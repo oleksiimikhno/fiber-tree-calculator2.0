@@ -58,7 +58,6 @@ export default class SplitElement extends HTMLElement {
                 
                 zIndex: 1
               });
-              
         }, 0);
 
         
@@ -244,45 +243,11 @@ export default class SplitElement extends HTMLElement {
         if ((rectFob.bottom - 30) < rectSplit.bottom) {
             setPosition(split, 'bottom');
             // parent.style.height = `${parent.offsetHeight + 10}px`
-
-            
         }
 
-
-
-        // function setPosition(elem, translateXY) {
-
-        //     let right, bottom = 0;
-            
-        //     function getTranslateXY(element) {
-        //         const style = window.getComputedStyle(element)
-        //         const matrix = new DOMMatrixReadOnly(style.transform)
-        //         return {
-        //             translateX: matrix.m41,
-        //             translateY: matrix.m42
-        //         }
-        //     }
-
-        //     let position = getTranslateXY(elem);
-        //         // widthThisFob = thielemsFob.offsetWidth + 40;
-
-        //     function positionXY(translateXY) {
-        //         switch(translateXY) {
-        //             case 'right': 
-        //                 return right = 10;
-        //             case 'bottom': 
-        //                 return bottom = 10;
-        //         }
-        //     }
-
-        //     console.log(positionXY(translateXY));
-
-        //     elem.style.transform = `translate(${position.translateX - 1}px, ${position.translateY}px)`;
-        // }
-
-
         function setPosition(elem, translateXY) {
-            let right, bottom = 0;
+            let right = 10,
+                bottom = 10;
             
             function getTranslateXY(element) {
                 const style = window.getComputedStyle(element)
@@ -296,20 +261,29 @@ export default class SplitElement extends HTMLElement {
             let position = getTranslateXY(elem);
                 // widthThisFob = thielemsFob.offsetWidth + 40;
 
-
             function positionXY(translateXY) {
                 switch(translateXY) {
                     case 'right': 
-                        return right = 10;
+                        return `translate(${position.translateX - right}px, ${position.translateY}px)`
                     case 'bottom': 
-                        return bottom = 10;
+                        return `translate(${position.translateX}px, ${position.translateY- bottom}px)`;
                 }
             }
 
-                elem.style.transform = `translate(${position.translateX - positionXY(translateXY)}px, ${position.translateY - positionXY(translateXY)}px)`;
-        }
+            // var draggable = new PlainDraggable(split.getElementById('target'));
 
-        
+            elem.style.transform = positionXY(translateXY);
+
+
+            const dragElem = split.querySelector('.draggable');
+
+            const draggable = new PlainDraggable(split, {
+                handle: dragElem,
+                zIndex: 1
+              });
+
+              draggable.position();
+        }
     }
 }
 
