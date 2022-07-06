@@ -45,6 +45,8 @@ export default class SplitElement extends HTMLElement {
         }, 0);
 
         setTimeout(() => {
+
+            // this.reCalcPositionSplit(this);
             const dragElem = this.querySelector('.draggable');
 
             if (!dragElem) return;
@@ -70,6 +72,8 @@ export default class SplitElement extends HTMLElement {
         this.querySelector('[name="in-signal"]').addEventListener('change', (e) =>{
             this.calcSignal()
         });
+
+        console.log(this);
     }
 
     createSplit(event) {
@@ -128,24 +132,6 @@ export default class SplitElement extends HTMLElement {
 
 
             fob.addEventListener('mousemove', (event) => (this.onResizeFob(event, fob, split)));
-            // function setPosition(thisFob) {
-            
-            //     function getTranslateXY(element) {
-            //         const style = window.getComputedStyle(element)
-            //         const matrix = new DOMMatrixReadOnly(style.transform)
-            //         return {
-            //             translateX: matrix.m41,
-            //             translateY: matrix.m42
-            //         }
-            //     }
-
-            //     let position = getTranslateXY(thisFob),
-            //         widthThisFob = thisFob.offsetWidth + 40;
-
-            //     newFob.style.transform = `translate(${position.translateX + widthThisFob}px, ${position.translateY}px)`;
-            // }
-
-            // setPosition(split)
         }
 
         
@@ -159,23 +145,8 @@ export default class SplitElement extends HTMLElement {
     }
 
     createLine(target, split) {
-        let line;
-
-        const rect = this.getBoundingClientRect()
-        console.log('rect: ', rect.top);
-        // const dragElem = this.querySelector('.draggable');
-        // console.log('dragElem: ', dragElem);
-
-        // if (!dragElem) return;
-
-        // new PlainDraggable(this, {
-        //     handle: dragElem,
-        //     onMove: function() { line.position(); },
-        //     zIndex: 1 
-        // });
-
-        line = new LeaderLine(target, split);
-        line.setOptions({startSocket: 'right', endSocket: 'left'});
+        let line = new LeaderLine(target, split);
+        line.setOptions({startSocket: 'auto', endSocket: 'left'});
         line.setOptions({path: 'grid'});
 
         const onMoveThisSplit = this.parentElement.addEventListener('mousemove', AnimEvent.add(function() {
@@ -213,9 +184,9 @@ export default class SplitElement extends HTMLElement {
     }
 
     onMovingSplit(event, elem) {
-        let parent = elem.closest('.fob')
-        let rectFob = parent.getBoundingClientRect();
-        let rectSplit = elem.getBoundingClientRect();
+        let parent = elem.closest('.fob'),
+            rectFob = parent.getBoundingClientRect(),
+            rectSplit = elem.getBoundingClientRect();
 
         if ((rectFob.right - 30) < rectSplit.right) {
 
@@ -229,20 +200,17 @@ export default class SplitElement extends HTMLElement {
     }
 
     onResizeFob(event, fob, split) {
-
         let rectFob = fob.getBoundingClientRect();
         let rectSplit = split.getBoundingClientRect();
         
         if ((rectFob.right - 30) < rectSplit.right) {
-            
-
             setPosition(split, 'right');
-            // parent.style.width = `${parent.offsetWidth + 10}px`
+            this.reCalcPositionSplit(split);
         }
 
         if ((rectFob.bottom - 30) < rectSplit.bottom) {
             setPosition(split, 'bottom');
-            // parent.style.height = `${parent.offsetHeight + 10}px`
+            this.reCalcPositionSplit(split);
         }
 
         function setPosition(elem, translateXY) {
@@ -258,10 +226,9 @@ export default class SplitElement extends HTMLElement {
                 }
             }
 
-            let position = getTranslateXY(elem);
-                // widthThisFob = thielemsFob.offsetWidth + 40;
+            function setPositionXY(translateXY) {
+                let position = getTranslateXY(elem);
 
-            function positionXY(translateXY) {
                 switch(translateXY) {
                     case 'right': 
                         return `translate(${position.translateX - right}px, ${position.translateY}px)`
@@ -270,20 +237,23 @@ export default class SplitElement extends HTMLElement {
                 }
             }
 
-            // var draggable = new PlainDraggable(split.getElementById('target'));
-
-            elem.style.transform = positionXY(translateXY);
-
-
-            const dragElem = split.querySelector('.draggable');
-
-            const draggable = new PlainDraggable(split, {
-                handle: dragElem,
-                zIndex: 1
-              });
-
-              draggable.position();
+            elem.style.transform = setPositionXY(translateXY);
         }
+
+        
+    }
+
+    reCalcPositionSplit(split) {
+        const dragElem = split.querySelector('.draggable');
+
+        if (!dragElem) return;
+
+        const draggable = new PlainDraggable(split, {
+            handle: dragElem,
+            zIndex: 1
+        });
+
+        draggable.position();
     }
 }
 
