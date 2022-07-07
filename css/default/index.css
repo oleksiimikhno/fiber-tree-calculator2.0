@@ -1,4 +1,4 @@
 @import './root.css';
-@import './_grid.css';
-@import './_icon.css';
-@import './_color.css';
+@import './grid.css';
+@import './icon.css';
+@import './color.css';
