@@ -119,13 +119,12 @@ export default class SplitElement extends HTMLElement {
 
     createLine(target, split) {
         let line = new LeaderLine(target, split);
+        this.splitLine = line;
         line.setOptions({startSocket: 'auto', endSocket: 'left'});
         line.setOptions({path: 'grid'});
 
-        this.splitLine = line;
-
         const onMoveThisSplit = this.parentElement.addEventListener('mousemove', AnimEvent.add(function() {
-            line.position();
+            line.position()
         }), false);
     }
 
@@ -178,18 +177,21 @@ export default class SplitElement extends HTMLElement {
         let rectFob = fob.getBoundingClientRect();
         let rectSplit = split.getBoundingClientRect();
         const getSplitPosition =  this.getTranslateXY(split);
-        
-        
+
         if ((rectFob.right - 30) < rectSplit.right) {
             setPosition('right');
             this.onSplitPosition(split);
             this.splitLine.position();
+
+
+            // AnimEvent.add(function() {this.splitLine.position()});
         }
 
         if ((rectFob.bottom - 30) < rectSplit.bottom) {
             setPosition('bottom');
             this.onSplitPosition(split);
             this.splitLine.position();
+            // AnimEvent.add(function() {this.splitLine.position()});
         }
 
         function setPosition(translateXY) {
