@@ -16,13 +16,11 @@ export default class FobElement extends ExtendetHTMLElement {
     }
 
     connectedCallback() {
-        console.log('Fob element in DOM');
         this._render();
         this._addEventListeners();
     }
 
     disconnectedCallback() {
-        console.log('remove fob element');
         this._removeEventListeners();
     }
 
@@ -33,6 +31,10 @@ export default class FobElement extends ExtendetHTMLElement {
     _addEventListeners() {
         this.addEventListener('click', this.createFob);
         this.querySelector('.draggable').addEventListener('mousemove', this.updateSplitLinePosition);
+    }
+
+    _removeEventListeners() {
+        this.querySelector('.draggable').removeEventListener('mousemove', this.updateSplitLinePosition);
     }
 
     updateSplitLinePosition(event) {
@@ -56,8 +58,6 @@ export default class FobElement extends ExtendetHTMLElement {
                     fobElem.append(fobHead);
                     fobGrid.classList.add('grid-field');
                     fobElem.append(fobGrid);
-
-                    // let fob = newFob(this.idFob);
             
                     function createFirstSplit() {
                         let split = document.createElement('split-element');
