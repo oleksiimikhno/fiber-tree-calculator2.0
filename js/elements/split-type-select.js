@@ -24,6 +24,10 @@ export default class SplitTypeSelectElement extends HTMLElement {
         this.addEventListener('change', this.changeSplitData);
     }
 
+    _removeEventListeners() {
+        this.removeEventListener('change', this.changeSplitData);
+    }
+
     createSelectSplit() {
         let arrayOption = [];
         const arraySelectName = ['type', 'fiber']
