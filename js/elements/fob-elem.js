@@ -1,10 +1,13 @@
-export default class FobElement extends HTMLElement {
+import ExtendetHTMLElement from './extendet-elem.js';
+
+export default class FobElement extends ExtendetHTMLElement {
     static #instances = 2;
 
     constructor(name) {
         super();
         this.idFob = FobElement.#instances++;
         this.rect = this.getBoundingClientRect();
+
         // this.count++;
         // this.dataset.fobId = count;
         // console.log(`Create element FOB ${this.dataset.fobId++}`);
@@ -24,20 +27,7 @@ export default class FobElement extends HTMLElement {
     }
 
     _render() {
-        this.drag = new PlainDraggable(this, {
-            handle: this.querySelector('.draggable'),
-            // onMove: function() { line.position(); },
-            // onMoveStart: function() { line.dash = {animation: true}; },
-            // onDragEnd: function() { line.dash = false; },
-            // handle: true,
-            
-            zIndex: 1
-          });
-
-
-
-          
-        // createFirstSplit();
+        this.onDraggableElement(this);
     }
 
     _addEventListeners() {
@@ -93,29 +83,10 @@ export default class FobElement extends HTMLElement {
                     }
 
                     let split = createFirstSplit();
-
         
                     fobGrid.insertAdjacentElement('beforeend', split);
 
                     return fobElem;
-            }
-
-            function createLine(targetnewFob) {
-                let line;
-                let drag = new PlainDraggable(newFob, {
-                    handle: newFob.querySelector('.draggable'),
-                    onMove: function() { line.position(); },
-                    zIndex: 1
-                });
-            
-                line = new LeaderLine(target, targetnewFob);
-                line.setOptions({startSocket: 'right', endSocket: 'left'});
-                line.setOptions({color: '#3197fd'});
-    
-                const updatePisitionThisFob = field.addEventListener('mousemove', AnimEvent.add(function() {
-                    line.position();
-                }), false);
-
             }
 
             function setPosition(thisFob) {
@@ -149,14 +120,19 @@ export default class FobElement extends HTMLElement {
             }
 
             let newFob = createNewFob(this.idFob);
-            let incomongElem = newFob.querySelector('[name="in-signal"]');
+            let fob = newFob.querySelector('[name="in-signal"]');
             
             field.append(newFob);
             setPosition(this);
-            createLine(incomongElem);
-            updateSignal(incomongElem);
+            this.line = this.createLine(this, target, fob);
+            this.onDraggableElement(newFob);
+            updateSignal(fob);
         }
     }
+
+    // removeFob() {
+
+    // }
 }
 
 customElements.define('fob-element', FobElement);

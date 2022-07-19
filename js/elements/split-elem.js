@@ -1,13 +1,19 @@
+import ExtendetHTMLElement from './extendet-elem.js';
+
 import objSplit from '../split-table-info/table.js';
 
-export default class SplitElement extends HTMLElement {
+export default class SplitElement extends ExtendetHTMLElement {
     static #instances = 2;
 
-    constructor(name) {
+    constructor() {
         super();
+        // this.getTranslateXY = getTranslateXY 
+
         this.idSplit = SplitElement.#instances++;
+
         this.rect = this.getBoundingClientRect();
-        this.splitLine;
+        // this.field = this.parentElement;
+        this.line;
         // this.i = i;
         // this.count++;
         // this.dataset.fobId = count;
@@ -33,9 +39,6 @@ export default class SplitElement extends HTMLElement {
     }
     
     attributeChangedCallback(name, oldValue, newValue) {
-        // console.log('newValue: ', newValue);
-        // console.log('oldValue: ', oldValue);
-        // console.log('name: ', name);
         this._render();
     }
 
@@ -105,8 +108,10 @@ export default class SplitElement extends HTMLElement {
             let fob = split.closest('.fob');
             fob.addEventListener('mousemove', (event) => (this.onResizeFob(event, fob, split)));
 
+// console.log(this);
+
             updateSignal(split);
-            this.createLine(target, split);
+            this.line = this.createLine(this, target, split, 'coral');
         }
     }
 
@@ -115,17 +120,6 @@ export default class SplitElement extends HTMLElement {
         drag.classList.add('draggable');
         drag.textContent = '';
         selectWrapper.append(drag);
-    }
-
-    createLine(target, split) {
-        let line = new LeaderLine(target, split);
-        this.splitLine = line;
-        line.setOptions({startSocket: 'auto', endSocket: 'left'});
-        line.setOptions({path: 'grid'});
-
-        const onMoveThisSplit = this.parentElement.addEventListener('mousemove', AnimEvent.add(function() {
-            line.position()
-        }), false);
     }
 
     calcSignal() {
@@ -179,22 +173,18 @@ export default class SplitElement extends HTMLElement {
         const getSplitPosition =  this.getTranslateXY(split);
 
         if ((rectFob.right - 30) < rectSplit.right) {
-            setPosition('right');
+            onSetPosition('right');
             this.onSplitPosition(split);
-            this.splitLine.position();
-
-
-            // AnimEvent.add(function() {this.splitLine.position()});
+            this.line.position();
         }
 
         if ((rectFob.bottom - 30) < rectSplit.bottom) {
-            setPosition('bottom');
+            onSetPosition('bottom');
             this.onSplitPosition(split);
-            this.splitLine.position();
-            // AnimEvent.add(function() {this.splitLine.position()});
+            this.line.position();
         }
 
-        function setPosition(translateXY) {
+        function onSetPosition(translateXY) {
             let space = 10;
 
             function setPositionXY(translateXY) {
@@ -218,21 +208,9 @@ export default class SplitElement extends HTMLElement {
 
         if (!dragElem) return;
 
-        const draggable = new PlainDraggable(split, {
-            handle: dragElem,
-            zIndex: 1
-        });
+        const draggable = this.onDraggableElement(split);
 
         draggable.position();
-    }
-
-    getTranslateXY(element) {
-        const style = window.getComputedStyle(element)
-        const matrix = new DOMMatrixReadOnly(style.transform)
-        return {
-            translateX: matrix.m41,
-            translateY: matrix.m42
-        }
     }
 }
 
