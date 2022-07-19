@@ -1,6 +1,5 @@
 import objSplit from '../split-table-info/table.js';
 
-
 export default class SplitTypeSelectElement extends HTMLElement {
     constructor() {
         super();
