@@ -7,20 +7,10 @@ export default class SplitElement extends ExtendetHTMLElement {
 
     constructor() {
         super();
-        // this.getTranslateXY = getTranslateXY 
-
         this.idSplit = SplitElement.#instances++;
 
         this.rect = this.getBoundingClientRect();
-        // this.field = this.parentElement;
         this.line;
-        // this.i = i;
-        // this.count++;
-        // this.dataset.fobId = count;
-        // console.log(`Create element FOB ${this.dataset.fobId++}`);
-        // setTimeout(() => {
-        //     this.createSplit();
-        // }, 1);
     }
 
     connectedCallback() {
@@ -54,6 +44,10 @@ export default class SplitElement extends ExtendetHTMLElement {
         this.querySelector('[name="in-signal"]').addEventListener('change', (e) =>{
             this.calcSignal()
         });
+    }
+
+    _removeEventListeners() {
+        
     }
 
     createSplit(event) {
@@ -101,14 +95,11 @@ export default class SplitElement extends ExtendetHTMLElement {
 
             split.addEventListener('mousemove', (event) => (this.onMovingSplit(event, split)));
 
-
             const position = this.getTranslateXY(target.closest('.split'));
             split.style.transform = `translate(${position.translateX + 200}px, ${position.translateY}px)`;
 
             let fob = split.closest('.fob');
             fob.addEventListener('mousemove', (event) => (this.onResizeFob(event, fob, split)));
-
-// console.log(this);
 
             updateSignal(split);
             this.line = this.createLine(this, target, split, 'coral');
