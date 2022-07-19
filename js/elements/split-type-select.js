@@ -13,7 +13,6 @@ export default class SplitTypeSelectElement extends HTMLElement {
 
     disconnectedCallback() {
         this._removeEventListeners();
-        this.removeOptions();
     }
 
     _render() {
