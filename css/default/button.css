@@ -1,0 +1,11 @@
+
+.btn{
+    cursor: pointer;
+}
+
+.create-fob{
+    position: absolute;
+    right: -35px;
+    background-color: inherit;
+    border: 0px;
+}

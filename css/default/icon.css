@@ -4,7 +4,12 @@
     cursor: pointer;
 }
 .icon-out {
+    pointer-events: none;
+}
+
+
+.icon-remove {
     position: absolute;
-    right: -30px;
-    pointer-events: auto;
+    top: -20px;
+    right: -25px;
 }

@@ -47,7 +47,7 @@ export default class SplitElement extends ExtendetHTMLElement {
     }
 
     _removeEventListeners() {
-        
+
     }
 
     createSplit(event) {
@@ -64,15 +64,17 @@ export default class SplitElement extends ExtendetHTMLElement {
                 <div class="column out-split">
                     <div class="split-out row" data-id="0">
                         <input class="out-signal" data-id="0" name="out-split" value="0" disabled="">
-                        <button class="btn-split create-split">+</button>
-                        <svg class="icon icon-out green create-fob"><use xlink:href="icon/icon.symbol.svg#arrow-right-line"></use></svg>
+                        <button class="btn btn-split create-split">+</button>
+                        <button class="btn create-fob"><svg class="icon icon-out green"><use xlink:href="icon/icon.symbol.svg#arrow-right-line"></use></svg></button>
                     </div>
                     <div class="split-out row" data-id="0">
                         <input class="out-signal" data-id="0" name="out-split" value="0" disabled="">
-                        <button class="btn-split create-split">+</button>
-                        <svg class="icon icon-out green create-fob"><use xlink:href="icon/icon.symbol.svg#arrow-right-line"></use></svg>
+                        <button class="btn btn-split create-split">+</button>
+                        <button class="btn create-fob"><svg class="icon icon-out green"><use xlink:href="icon/icon.symbol.svg#arrow-right-line"></use></svg></button>
                     </div>
-                </div>`;
+                </div>
+                <button class="icon icon-remove">X</button>
+                `;
             this.insertAdjacentElement('afterend', split);
 
             function updateSignal(split) {
@@ -95,14 +97,14 @@ export default class SplitElement extends ExtendetHTMLElement {
 
             split.addEventListener('mousemove', (event) => (this.onMovingSplit(event, split)));
 
-            const position = this.getTranslateXY(target.closest('.split'));
+            const position = super.getTranslateXY(target.closest('.split'));
             split.style.transform = `translate(${position.translateX + 200}px, ${position.translateY}px)`;
 
             let fob = split.closest('.fob');
             fob.addEventListener('mousemove', (event) => (this.onResizeFob(event, fob, split)));
 
             updateSignal(split);
-            this.line = this.createLine(this, target, split, 'coral');
+            this.line = super.createLine(this, target, split, 'coral');
         }
     }
 
@@ -161,7 +163,7 @@ export default class SplitElement extends ExtendetHTMLElement {
     onResizeFob(event, fob, split) {
         let rectFob = fob.getBoundingClientRect();
         let rectSplit = split.getBoundingClientRect();
-        const getSplitPosition =  this.getTranslateXY(split);
+        const getSplitPosition =  super.getTranslateXY(split);
 
         if ((rectFob.right - 30) < rectSplit.right) {
             onSetPosition('right');
@@ -199,7 +201,7 @@ export default class SplitElement extends ExtendetHTMLElement {
 
         if (!dragElem) return;
 
-        const draggable = this.onDraggableElement(split);
+        const draggable = super.onDraggableElement(split);
 
         draggable.position();
     }

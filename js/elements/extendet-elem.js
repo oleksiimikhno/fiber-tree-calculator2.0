@@ -23,8 +23,6 @@ export default class ExtendetHTMLElement extends HTMLElement {
     }
 
     _removeEventListeners() {
-        console.log(this.prevElement);
-        console.log(123);
         this.prevElement.removeEventListener('mousemove', AnimEvent.add(() => line.position()), false);
     }
 
@@ -51,7 +49,6 @@ export default class ExtendetHTMLElement extends HTMLElement {
     }
 
     updateLinePosition(element, line) {
-        console.log('element: ', element);
         element.addEventListener('mousemove', AnimEvent.add(() => line.position()), false);
     }
 
