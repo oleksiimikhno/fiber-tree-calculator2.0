@@ -10,7 +10,9 @@ export default class SplitElement extends ExtendetHTMLElement {
         this.idSplit = SplitElement.#instances++;
 
         this.rect = this.getBoundingClientRect();
-        this.line;
+        // this.fob;
+        // this.split
+        // let line = 123
     }
 
     connectedCallback() {
@@ -21,7 +23,10 @@ export default class SplitElement extends ExtendetHTMLElement {
 
     disconnectedCallback() {
         console.log('remove Split element');
+        console.log("removed",this.innerHTML)
+        console.log('this.line: ', this.line);
         this._removeEventListeners();
+        
     }
 
     static get observedAttributes() {
@@ -38,59 +43,37 @@ export default class SplitElement extends ExtendetHTMLElement {
     }
 
     _addEventListeners() {
-        this.addEventListener('click', this.createSplit);
+        this.addEventListener('click', this.onCreateSplit);
         this.addEventListener('change', this.calcSignal);
+        this.addEventListener('click', this.removeSplit);
         // this.querySelector('[name="in-signal"]').addEventListener('change', this.calcSignal);
         this.querySelector('[name="in-signal"]').addEventListener('change', (e) =>{
             this.calcSignal()
         });
+
+
+       
     }
 
     _removeEventListeners() {
+        console.log('_removeEventListeners: ');
+        
+        this.removeEventListener('click', this.onCreateSplit);
+        this.removeEventListener('change', this.calcSignal);
+        this.querySelector('[name="in-signal"]').removeEventListener('change', (e) =>{
+            this.calcSignal()
+        });
+        // this.parentElement.removeEventListener('mousemove', AnimEvent.add(() => this.line.position()), false);
 
+        // this.split.removeEventListener('mousemove', (event) => (this.onMovingSplit(event, this.split)));
     }
 
-    createSplit(event) {
+    onCreateSplit(event) {
         const target = event.target;
 
         if (target.matches('.create-split')) {
-            let split = document.createElement('split-element');
-            split.classList.add('row', 'split');
-            split.id = `split-${this.idSplit}`;
-
-            split.innerHTML = 
-                `<split-type-select class="row split-selected"></split-type-select>
-                <div class="vertical-center"><input id="in-signal" class="in-split" name="in-signal" value="0"></div>
-                <div class="column out-split">
-                    <div class="split-out row" data-id="0">
-                        <input class="out-signal" data-id="0" name="out-split" value="0" disabled="">
-                        <button class="btn btn-split create-split">+</button>
-                        <button class="btn create-fob"><svg class="icon icon-out green"><use xlink:href="icon/icon.symbol.svg#arrow-right-line"></use></svg></button>
-                    </div>
-                    <div class="split-out row" data-id="0">
-                        <input class="out-signal" data-id="0" name="out-split" value="0" disabled="">
-                        <button class="btn btn-split create-split">+</button>
-                        <button class="btn create-fob"><svg class="icon icon-out green"><use xlink:href="icon/icon.symbol.svg#arrow-right-line"></use></svg></button>
-                    </div>
-                </div>
-                <button class="icon icon-remove">X</button>
-                `;
+            const split = super.createSplit()
             this.insertAdjacentElement('afterend', split);
-
-            function updateSignal(split) {
-                let inputSignal = split.querySelector('[name="in-signal"]');
-
-                let parent = target.closest('.split-out');
-                let getOutSignalElement = parent.querySelector('.out-signal');
-                inputSignal.value = getOutSignalElement.value;
-    
-                getOutSignalElement.addEventListener('change', (event) => {
-                    const target = event.target;
-                    inputSignal.value = target.value;
-    
-                    inputSignal.dispatchEvent(new Event('change'));
-                })
-            }
 
             const selectWrapper = split.querySelector('.split-selected');
             this.createDraggableElement(selectWrapper);
@@ -103,7 +86,8 @@ export default class SplitElement extends ExtendetHTMLElement {
             let fob = split.closest('.fob');
             fob.addEventListener('mousemove', (event) => (this.onResizeFob(event, fob, split)));
 
-            updateSignal(split);
+            this.handlerUpdateSignal(target, split);
+
             this.line = super.createLine(this, target, split, 'coral');
         }
     }
@@ -144,18 +128,31 @@ export default class SplitElement extends ExtendetHTMLElement {
         }
     }
 
+    handlerUpdateSignal(target, split) {
+        let inputSignal = split.querySelector('[name="in-signal"]');
+
+        let parent = target.closest('.split-out');
+        let getOutSignalElement = parent.querySelector('.out-signal');
+        inputSignal.value = getOutSignalElement.value;
+
+        getOutSignalElement.addEventListener('change', (event) => {
+            const target = event.target;
+            inputSignal.value = target.value;
+
+            inputSignal.dispatchEvent(new Event('change'));
+        })
+    }
+
     onMovingSplit(event, split) {
         let fob = split.closest('.fob'),
             rectFob = fob.getBoundingClientRect(),
             rectSplit = split.getBoundingClientRect();
 
         if ((rectFob.right - 30) < rectSplit.right) {
-
             fob.style.width = `${fob.offsetWidth + 10}px`
         }
 
         if ((rectFob.bottom - 30) < rectSplit.bottom) {
-
             fob.style.height = `${fob.offsetHeight + 10}px`
         }
     }
@@ -163,37 +160,17 @@ export default class SplitElement extends ExtendetHTMLElement {
     onResizeFob(event, fob, split) {
         let rectFob = fob.getBoundingClientRect();
         let rectSplit = split.getBoundingClientRect();
-        const getSplitPosition =  super.getTranslateXY(split);
 
         if ((rectFob.right - 30) < rectSplit.right) {
-            onSetPosition('right');
+            super.onSetPosition(split, 'right', this.line);
+            
             this.onSplitPosition(split);
-            this.line.position();
         }
 
         if ((rectFob.bottom - 30) < rectSplit.bottom) {
-            onSetPosition('bottom');
+            super.onSetPosition(split, 'bottom', this.line);
             this.onSplitPosition(split);
-            this.line.position();
         }
-
-        function onSetPosition(translateXY) {
-            let space = 10;
-
-            function setPositionXY(translateXY) {
-                let position = getSplitPosition;
-
-                switch(translateXY) {
-                    case 'right': 
-                        return `translate(${position.translateX - space}px, ${position.translateY}px)`
-                    case 'bottom': 
-                        return `translate(${position.translateX}px, ${position.translateY- space}px)`;
-                }
-            }
-
-            split.style.transform = setPositionXY(translateXY);
-        }
-        
     }
 
     onSplitPosition(split) {
@@ -204,6 +181,18 @@ export default class SplitElement extends ExtendetHTMLElement {
         const draggable = super.onDraggableElement(split);
 
         draggable.position();
+    }
+
+    removeSplit(event) {
+        const target = event.target;
+
+        if (target.matches('.icon-remove')) {
+            console.log(this.line._id);
+            // this.line._id.remove();
+        }
+
+       
+        
     }
 }
 

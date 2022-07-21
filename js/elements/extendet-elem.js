@@ -23,7 +23,31 @@ export default class ExtendetHTMLElement extends HTMLElement {
     }
 
     _removeEventListeners() {
-        this.prevElement.removeEventListener('mousemove', AnimEvent.add(() => line.position()), false);
+        console.log('qwe');
+        // this.prevElement.removeEventListener('mousemove', AnimEvent.add(() => line.position()), false);
+    }
+
+    createSplit() {
+        let split = document.createElement('split-element');
+        split.classList.add('row', 'split');
+        
+        split.innerHTML  = 
+            `<split-type-select class="row split-selected"></split-type-select>
+            <div class="vertical-center"><input class="in-split" name="in-signal" value="0"></div>
+            <div class="column out-split">
+                <div class="split-out row" data-id="0">
+                    <input class="out-signal" data-id="0" name="out-split" value="0" disabled="">
+                    <button class="btn btn-split create-split">+</button>
+                    <button class="btn create-fob"><svg class="icon icon-out green"><use xlink:href="icon/icon.symbol.svg#arrow-right-line"></use></svg></button>
+                </div>
+                <div class="split-out row" data-id="0">
+                    <input class="out-signal" data-id="0" name="out-split" value="0" disabled="">
+                    <button class="btn btn-split create-split">+</button>
+                    <button class="btn create-fob"><svg class="icon icon-out green"><use xlink:href="icon/icon.symbol.svg#arrow-right-line"></use></svg></button>
+                </div>
+            </div>`;
+
+        return split;
     }
 
     onDraggableElement(element) {
@@ -49,12 +73,29 @@ export default class ExtendetHTMLElement extends HTMLElement {
     }
 
     updateLinePosition(element, line) {
-        element.addEventListener('mousemove', AnimEvent.add(() => line.position()), false);
+        element.parentElement.addEventListener('mousemove', AnimEvent.add(() => line.position()), false);
     }
 
     removeLine(line) {
         line.remove();
     }
+
+    onSetPosition(element, positionElem = 'right', line, space = 10) {
+        const getItemPosition =  this.getTranslateXY(element);
+
+        function setPositionXY() {
+            let position = getItemPosition;
+
+            switch(positionElem) {
+                case 'right': 
+                    return `translate(${position.translateX - space}px, ${position.translateY}px)`
+                case 'bottom': 
+                    return `translate(${position.translateX}px, ${position.translateY - space}px)`;
+            }
+        }
+
+        element.style.transform = setPositionXY();
+    }  
 
     getTranslateXY(element) {
         const style = window.getComputedStyle(element)

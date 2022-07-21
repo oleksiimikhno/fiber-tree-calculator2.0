@@ -46,6 +46,10 @@ export default class FobElement extends ExtendetHTMLElement {
         const target = event.target;
         
         if (target.matches('.create-fob')) {
+            const split = super.createSplit()
+            this.split = split;
+
+            const getSplitPosition = super.getTranslateXY(this);
 
             function createNewFob(id) {
                 let fobElem = document.createElement('fob-element'),
@@ -58,31 +62,6 @@ export default class FobElement extends ExtendetHTMLElement {
                     fobElem.append(fobHead);
                     fobGrid.classList.add('grid-field');
                     fobElem.append(fobGrid);
-            
-                    function createFirstSplit() {
-                        let split = document.createElement('split-element');
-                        split.classList.add('row', 'split');
-                        
-                        split.innerHTML  = 
-                            `<split-type-select class="row split-selected"></split-type-select>
-                            <div class="vertical-center"><input class="in-split" name="in-signal" value="0"></div>
-                            <div class="column out-split">
-                                <div class="split-out row" data-id="0">
-                                    <input class="out-signal" data-id="0" name="out-split" value="0" disabled="">
-                                    <button class="btn btn-split create-split">+</button>
-                                    <button class="btn create-fob"><svg class="icon icon-out green"><use xlink:href="icon/icon.symbol.svg#arrow-right-line"></use></svg></button>
-                                </div>
-                                <div class="split-out row" data-id="0">
-                                    <input class="out-signal" data-id="0" name="out-split" value="0" disabled="">
-                                    <button class="btn btn-split create-split">+</button>
-                                    <button class="btn create-fob"><svg class="icon icon-out green"><use xlink:href="icon/icon.symbol.svg#arrow-right-line"></use></svg></button>
-                                </div>
-                            </div>`;
-
-                        return split;
-                    }
-
-                    let split = createFirstSplit();
         
                     fobGrid.insertAdjacentElement('beforeend', split);
 
@@ -90,17 +69,7 @@ export default class FobElement extends ExtendetHTMLElement {
             }
 
             function setPosition(thisFob) {
-            
-                function getTranslateXY(element) {
-                    const style = window.getComputedStyle(element)
-                    const matrix = new DOMMatrixReadOnly(style.transform)
-                    return {
-                        translateX: matrix.m41,
-                        translateY: matrix.m42
-                    }
-                }
-
-                let position = getTranslateXY(thisFob),
+                let position = getSplitPosition,
                     widthThisFob = thisFob.offsetWidth + 40;
 
                 newFob.style.transform = `translate(${position.translateX + widthThisFob}px, ${position.translateY}px)`;
