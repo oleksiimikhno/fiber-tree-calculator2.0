@@ -44,6 +44,7 @@ export default class SplitElement extends ExtendetHTMLElement {
 
     _addEventListeners() {
         this.addEventListener('click', this.onCreateSplit);
+        this.addEventListener('click', this.onRemoveSplit);
         this.addEventListener('change', this.calcSignal);
         this.addEventListener('click', this.removeSplit);
         // this.querySelector('[name="in-signal"]').addEventListener('change', this.calcSignal);
@@ -59,6 +60,7 @@ export default class SplitElement extends ExtendetHTMLElement {
         console.log('_removeEventListeners: ');
         
         this.removeEventListener('click', this.onCreateSplit);
+        // this.removeEventListener('click', this.onRemoveSplit);
         this.removeEventListener('change', this.calcSignal);
         this.querySelector('[name="in-signal"]').removeEventListener('change', (e) =>{
             this.calcSignal()
@@ -70,26 +72,32 @@ export default class SplitElement extends ExtendetHTMLElement {
 
     onCreateSplit(event) {
         const target = event.target;
+        console.log('target: ', target);
 
         if (target.matches('.create-split')) {
             const split = super.createSplit()
-            this.insertAdjacentElement('afterend', split);
-
             const selectWrapper = split.querySelector('.split-selected');
-            this.createDraggableElement(selectWrapper);
-
-            split.addEventListener('mousemove', (event) => (this.onMovingSplit(event, split)));
-
             const position = super.getTranslateXY(target.closest('.split'));
+
+            this.insertAdjacentElement('afterend', split);
+            this.createDraggableElement(selectWrapper);
+            this.handlerUpdateSignal(target, split);
+           
             split.style.transform = `translate(${position.translateX + 200}px, ${position.translateY}px)`;
+            split.addEventListener('mousemove', (event) => (this.onMovingSplit(event, split)));
 
             let fob = split.closest('.fob');
             fob.addEventListener('mousemove', (event) => (this.onResizeFob(event, fob, split)));
 
-            this.handlerUpdateSignal(target, split);
-
             this.line = super.createLine(this, target, split, 'coral');
+            console.log('this.line: ', this.line);
+
+
+            this.onChangeRemoveButton(target, 'subtract-line');
+
         }
+
+
     }
 
     createDraggableElement(selectWrapper) {
@@ -183,16 +191,28 @@ export default class SplitElement extends ExtendetHTMLElement {
         draggable.position();
     }
 
-    removeSplit(event) {
+    onRemoveSplit(event) {
         const target = event.target;
 
-        if (target.matches('.icon-remove')) {
-            console.log(this.line._id);
-            // this.line._id.remove();
+        if (target.matches('.remove-split')) {
+            const id = +target.dataset.lineId
+
+            this.onChangeRemoveButton(target, 'add-fill')
+            super.onRemoveLine(id)
         }
 
        
         
+    }
+
+    onChangeRemoveButton(target, iconName) {
+        target.classList.toggle('create-split');
+        setTimeout(() => target.classList.toggle('remove-split'), 0);
+
+        const nextSibling = target.nextElementSibling;
+        nextSibling.classList.toggle('hidden');
+
+        super.swapIcon(target.querySelector('use'), iconName);
     }
 }
 

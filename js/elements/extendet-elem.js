@@ -1,4 +1,4 @@
-
+let arrayLines = [];
 
 export default class ExtendetHTMLElement extends HTMLElement {
     constructor() {
@@ -37,13 +37,21 @@ export default class ExtendetHTMLElement extends HTMLElement {
             <div class="column out-split">
                 <div class="split-out row" data-id="0">
                     <input class="out-signal" data-id="0" name="out-split" value="0" disabled="">
-                    <button class="btn btn-split create-split">+</button>
-                    <button class="btn create-fob"><svg class="icon icon-out green"><use xlink:href="icon/icon.symbol.svg#arrow-right-line"></use></svg></button>
+                    <button class="btn btn-split create-split">
+                        <svg class="icon icon-out"><use xlink:href="icon/icon.symbol.svg#add-fill"></use></svg>
+                    </button> 
+                    <button class="btn create-fob">
+                        <svg class="icon icon-out green"><use xlink:href="icon/icon.symbol.svg#arrow-right-line"></use></svg>
+                    </button>
                 </div>
                 <div class="split-out row" data-id="0">
                     <input class="out-signal" data-id="0" name="out-split" value="0" disabled="">
-                    <button class="btn btn-split create-split">+</button>
-                    <button class="btn create-fob"><svg class="icon icon-out green"><use xlink:href="icon/icon.symbol.svg#arrow-right-line"></use></svg></button>
+                    <button class="btn btn-split create-split">
+                        <svg class="icon icon-out"><use xlink:href="icon/icon.symbol.svg#add-fill"></use></svg>
+                    </button>
+                    <button class="btn create-fob">
+                        <svg class="icon icon-out green"><use xlink:href="icon/icon.symbol.svg#arrow-right-line"></use></svg>
+                    </button>
                 </div>
             </div>`;
 
@@ -67,6 +75,10 @@ export default class ExtendetHTMLElement extends HTMLElement {
         line.setOptions({path: 'grid'});
         line.setOptions({color: color});
 
+        target.dataset.lineId = line._id;
+
+        arrayLines.push(line);
+
         this.updateLinePosition(this.prevElement, line);
 
         return line;
@@ -76,8 +88,14 @@ export default class ExtendetHTMLElement extends HTMLElement {
         element.parentElement.addEventListener('mousemove', AnimEvent.add(() => line.position()), false);
     }
 
-    removeLine(line) {
-        line.remove();
+    onRemoveLine(id) {
+        let array = [];
+
+        for (let i = 0; i < arrayLines.length; i++) {
+            (arrayLines[i]._id === id) ? arrayLines[i].remove() : array.push(arrayLines[i]);
+        }
+
+        arrayLines = array;
     }
 
     onSetPosition(element, positionElem = 'right', line, space = 10) {
@@ -104,5 +122,9 @@ export default class ExtendetHTMLElement extends HTMLElement {
             translateX: matrix.m41,
             translateY: matrix.m42
         }
+    }
+
+    swapIcon(icon, name) {
+        icon.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', `icon/icon.symbol.svg#${name}`);
     }
 }
