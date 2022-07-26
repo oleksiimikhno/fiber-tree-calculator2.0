@@ -1,15 +1,18 @@
 .icon{
-    height: 25px;
-    width: 25px;
+    max-height: 25px;
+    max-width: 25px;
     cursor: pointer;
 }
 .icon-out {
     pointer-events: none;
 }
-
-
-.icon-remove {
+/* .icon-remove {
     position: absolute;
     top: -20px;
-    right: -25px;
+    right: -15px;
+} */
+
+.btn-split > .icon {
+    max-height: 18px;
+    max-width: 18px;
 }

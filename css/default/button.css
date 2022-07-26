@@ -1,11 +1,13 @@
 
 .btn{
+    display: grid;
+    padding: 0;
     cursor: pointer;
 }
 
 .create-fob{
     position: absolute;
-    right: -35px;
+    right: -30px;
     background-color: inherit;
     border: 0px;
 }
