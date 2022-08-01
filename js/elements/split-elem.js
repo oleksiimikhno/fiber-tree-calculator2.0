@@ -72,7 +72,6 @@ export default class SplitElement extends ExtendetHTMLElement {
 
     onCreateSplit(event) {
         const target = event.target;
-        console.log('target: ', target);
 
         if (target.matches('.create-split')) {
             const split = super.createSplit()
@@ -90,14 +89,9 @@ export default class SplitElement extends ExtendetHTMLElement {
             fob.addEventListener('mousemove', (event) => (this.onResizeFob(event, fob, split)));
 
             this.line = super.createLine(this, target, split, 'coral');
-            console.log('this.line: ', this.line);
-
 
             this.onChangeRemoveButton(target, 'subtract-line');
-
         }
-
-
     }
 
     createDraggableElement(selectWrapper) {
@@ -197,23 +191,13 @@ export default class SplitElement extends ExtendetHTMLElement {
         if (target.matches('.remove-split')) {
             const id = +target.dataset.lineId
 
-            this.onChangeRemoveButton(target, 'add-fill')
-            super.onRemoveLine(id)
+            super.onChangeRemoveButton(target, 'add-fill')
+            super.handlerRemoveElement(id);
         }
 
        
         
     }
-
-    onChangeRemoveButton(target, iconName) {
-        target.classList.toggle('create-split');
-        setTimeout(() => target.classList.toggle('remove-split'), 0);
-
-        const nextSibling = target.nextElementSibling;
-        nextSibling.classList.toggle('hidden');
-
-        super.swapIcon(target.querySelector('use'), iconName);
-    }
 }
 
-  customElements.define('split-element', SplitElement);
+customElements.define('split-element', SplitElement);

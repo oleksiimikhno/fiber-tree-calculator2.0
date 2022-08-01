@@ -27,7 +27,7 @@ export default class ExtendetHTMLElement extends HTMLElement {
         // this.prevElement.removeEventListener('mousemove', AnimEvent.add(() => line.position()), false);
     }
 
-    createSplit() {
+    createSplit(id) {
         let split = document.createElement('split-element');
         split.classList.add('row', 'split');
         
@@ -80,19 +80,64 @@ export default class ExtendetHTMLElement extends HTMLElement {
         arrayLines.push(line);
 
         this.updateLinePosition(this.prevElement, line);
+        console.log('line: ', line);
 
         return line;
     }
 
     updateLinePosition(element, line) {
-        element.parentElement.addEventListener('mousemove', AnimEvent.add(() => line.position()), false);
+        // console.log(element.parentElement);
+
+        // this.ppp = element.parentElement;
+        // console.log('this.ppp: ', this.ppp);
+        // element.parentElement.addEventListener('mousemove', line.position());
+
+        // this.clickHandler = this.ff(line).bind(this);
+        // element.parentElement.addEventListener('mousemove', this.clickHandler)
+
+        element.parentElement.addEventListener('mousemove', () => this.ff(line), true);
+
+        
+        // element.parentElement.addEventListener('mousemove', AnimEvent.add(() => line.position()), false);
+        // line.remove()
     }
 
-    onRemoveLine(id) {
+    ff(line) {
+        console.log('line: ', line);
+        line.position()
+        // line.position()
+        // console.log('line222: ', line);
+        // AnimEvent.add(() => line.position()), false
+    }
+
+    // handlerRemoveElement(id) {
+
+
+    //     this.onRemoveLine(id);
+    // }
+
+    handlerRemoveElement(id) {
         let array = [];
 
+        const clearElement = (line) => {
+            console.log('line: ', line);
+console.log('123,', line.start.closest('.fob'));
+            line.start.closest('.fob').removeEventListener('mousemove', this.clickHandler);
+
+            const nextElement = line.end;
+
+            const removeButtons = nextElement.querySelectorAll('.remove-split');
+            console.log('removeButtons: ', removeButtons);
+
+            removeButtons.forEach(item => {
+                item.dispatchEvent(new Event('click'));
+            });
+            nextElement.remove();
+            line.remove();
+        }
+
         for (let i = 0; i < arrayLines.length; i++) {
-            (arrayLines[i]._id === id) ? arrayLines[i].remove() : array.push(arrayLines[i]);
+            let clearElements = (arrayLines[i]._id === id) ? clearElement(arrayLines[i]) : array.push(arrayLines[i]);
         }
 
         arrayLines = array;
@@ -122,6 +167,15 @@ export default class ExtendetHTMLElement extends HTMLElement {
             translateX: matrix.m41,
             translateY: matrix.m42
         }
+    }
+
+    onChangeRemoveButton(target, iconName) {
+        target.classList.toggle('create-split');
+        setTimeout(() => target.classList.toggle('remove-split'), 0);
+
+        target.nextElementSibling.classList.toggle('hidden');
+
+        this.swapIcon(target.querySelector('use'), iconName);
     }
 
     swapIcon(icon, name) {
