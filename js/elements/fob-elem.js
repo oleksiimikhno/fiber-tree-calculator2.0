@@ -93,11 +93,22 @@ export default class FobElement extends ExtendetHTMLElement {
             
             field.append(newFob);
             setPosition(this);
+
+
             this.line = super.createLine(this, target, fob);
+
+
+            // this.parentElement.addEventListener('mousemove', this.upd);
+
+
             super.onDraggableElement(newFob);
             updateSignal(fob);
         }
     }
+
+    // upd() {
+    //     AnimEvent.add(() => this.line.position()), false
+    // }
 
     // removeFob() {
 

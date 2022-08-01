@@ -74,7 +74,10 @@ export default class SplitElement extends ExtendetHTMLElement {
         const target = event.target;
 
         if (target.matches('.create-split')) {
-            const split = super.createSplit()
+
+console.log('12312313');
+
+            const split = super.createSplit();
             const selectWrapper = split.querySelector('.split-selected');
             const position = super.getTranslateXY(target.closest('.split'));
 
@@ -88,7 +91,14 @@ export default class SplitElement extends ExtendetHTMLElement {
             let fob = split.closest('.fob');
             fob.addEventListener('mousemove', (event) => (this.onResizeFob(event, fob, split)));
 
+
+
+
             this.line = super.createLine(this, target, split, 'coral');
+
+
+
+            
 
             this.onChangeRemoveButton(target, 'subtract-line');
         }

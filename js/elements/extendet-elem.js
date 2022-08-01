@@ -80,7 +80,7 @@ export default class ExtendetHTMLElement extends HTMLElement {
         arrayLines.push(line);
 
         this.updateLinePosition(this.prevElement, line);
-        console.log('line: ', line);
+        // console.log('line2: ', line);
 
         return line;
     }
@@ -95,15 +95,15 @@ export default class ExtendetHTMLElement extends HTMLElement {
         // this.clickHandler = this.ff(line).bind(this);
         // element.parentElement.addEventListener('mousemove', this.clickHandler)
 
-        element.parentElement.addEventListener('mousemove', () => this.ff(line), true);
+        // element.parentElement.addEventListener('mousemove', () => this.ff(line), true);
 
         
-        // element.parentElement.addEventListener('mousemove', AnimEvent.add(() => line.position()), false);
+        element.parentElement.addEventListener('mousemove', AnimEvent.add(() => line.position()), false);
         // line.remove()
     }
 
     ff(line) {
-        console.log('line: ', line);
+        // console.log('line: ', line);
         line.position()
         // line.position()
         // console.log('line222: ', line);
