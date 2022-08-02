@@ -12,7 +12,6 @@ export default class ButtonCreateElement extends ExtendetHTMLElement {
 
     disconnectedCallback() {
         this._removeEventListeners();
-        
     }
 
     _render() {
@@ -20,41 +19,55 @@ export default class ButtonCreateElement extends ExtendetHTMLElement {
     }
 
     _addEventListeners() {
-        // this.addEventListener('click', this.handlerCreateSplit);
+        this.addEventListener('click', this.handlerCreateSplit);
+        this.addEventListener('click', this.handlerRemoveSplit);
+        
     }
 
     _removeEventListeners() {
+        this.removeEventListener('click', this.handlerCreateSplit);
+        this.removeEventListener('click', this.handlerRemoveSplit);
     }
 
     appendSVG () {
         this.insertAdjacentHTML('afterbegin','<svg class="icon icon-out"><use xlink:href="icon/icon.symbol.svg#add-fill"></use></svg>')
     }
 
-    handlerCreateSplit() {
-console.log('create');
-        const target = this
+    handlerCreateSplit(event) {
+        const target = event.target;
 
-        const split = super.createSplit();
+        if (target.matches('.create-split')) {
+            const split = super.createSplit();
+            const selectWrapper = split.querySelector('.split-selected');
 
-        const selectWrapper = split.querySelector('.split-selected');
-        const position = super.getTranslateXY(target.closest('.split'));
+            const prevSplit = this.closest('.split');
+            prevSplit.insertAdjacentElement('afterend', split);
+            prevSplit.createDraggableElement(selectWrapper);
+            prevSplit.handlerUpdateSignal(this, split);
 
-       const firstSplit = this.closest('.split');
+            const fob = split.closest('.fob');
 
-        firstSplit.insertAdjacentElement('afterend', split);
-        firstSplit.createDraggableElement(selectWrapper);
-        firstSplit.handlerUpdateSignal(target, split);
-       
-        split.style.transform = `translate(${position.translateX + 200}px, ${position.translateY}px)`;
+            const position = super.getTranslateXY(this.closest('.split'));
+            split.style.transform = `translate(${position.translateX + 200}px, ${position.translateY}px)`;
 
-        let fob = split.closest('.fob');
-        fob.addEventListener('mousemove', (event) => (firstSplit.onResizeFob(event, fob, split)));
+            fob.addEventListener('mousemove', (event) => (this.onResizeFob(event, fob, split)));
 
-        firstSplit.line = super.createLine(this, target, split, 'coral');
+            this.line = super.createLine(fob, this, split, 'coral');
 
-        firstSplit.onChangeRemoveButton(target, 'subtract-line');
+            super.onChangeRemoveButton(this, 'subtract-line');
+        }
 
-        console.log(123);
+    }
+
+    handlerRemoveSplit(event) {
+        const target = event.target;
+
+        if (target.matches('.remove-split')) {
+            const id = +target.dataset.lineId
+
+            super.onChangeRemoveButton(target, 'add-fill')
+            super.handlerRemoveElement(id);
+        }
     }
 
     createDraggableElement(selectWrapper) {
@@ -79,6 +92,7 @@ console.log('create');
     }
 
     onResizeFob(event, fob, split) {
+
         let rectFob = fob.getBoundingClientRect();
         let rectSplit = split.getBoundingClientRect();
 

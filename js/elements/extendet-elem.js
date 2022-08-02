@@ -37,18 +37,14 @@ export default class ExtendetHTMLElement extends HTMLElement {
             <div class="column out-split">
                 <div class="split-out row" data-id="0">
                     <input class="out-signal" data-id="0" name="out-split" value="0" disabled="">
-                    <button class="btn btn-split create-split">
-                        <svg class="icon icon-out"><use xlink:href="icon/icon.symbol.svg#add-fill"></use></svg>
-                    </button> 
+                    <button-create-element class="btn btn-split create-split"></button-create-element> 
                     <button class="btn create-fob">
                         <svg class="icon icon-out green"><use xlink:href="icon/icon.symbol.svg#arrow-right-line"></use></svg>
                     </button>
                 </div>
                 <div class="split-out row" data-id="0">
                     <input class="out-signal" data-id="0" name="out-split" value="0" disabled="">
-                    <button class="btn btn-split create-split">
-                        <svg class="icon icon-out"><use xlink:href="icon/icon.symbol.svg#add-fill"></use></svg>
-                    </button>
+                    <button-create-element class="btn btn-split create-split"></button-create-element> 
                     <button class="btn create-fob">
                         <svg class="icon icon-out green"><use xlink:href="icon/icon.symbol.svg#arrow-right-line"></use></svg>
                     </button>
@@ -80,54 +76,27 @@ export default class ExtendetHTMLElement extends HTMLElement {
         arrayLines.push(line);
 
         this.updateLinePosition(this.prevElement, line);
-        // console.log('line2: ', line);
 
         return line;
     }
 
     updateLinePosition(element, line) {
-        // console.log(element.parentElement);
+        this.parentField = element.parentElement;
 
-        // this.ppp = element.parentElement;
-        // console.log('this.ppp: ', this.ppp);
-        // element.parentElement.addEventListener('mousemove', line.position());
+        const updatePositionLine = () => line.position();
 
-        // this.clickHandler = this.ff(line).bind(this);
-        // element.parentElement.addEventListener('mousemove', this.clickHandler)
-
-        // element.parentElement.addEventListener('mousemove', () => this.ff(line), true);
-
+        this.listener = updatePositionLine.bind(this);
         
-        element.parentElement.addEventListener('mousemove', AnimEvent.add(() => line.position()), false);
-        // line.remove()
+        this.parentField.addEventListener('mousemove', this.listener, false);
     }
-
-    ff(line) {
-        // console.log('line: ', line);
-        line.position()
-        // line.position()
-        // console.log('line222: ', line);
-        // AnimEvent.add(() => line.position()), false
-    }
-
-    // handlerRemoveElement(id) {
-
-
-    //     this.onRemoveLine(id);
-    // }
 
     handlerRemoveElement(id) {
         let array = [];
 
         const clearElement = (line) => {
-            console.log('line: ', line);
-console.log('123,', line.start.closest('.fob'));
-            line.start.closest('.fob').removeEventListener('mousemove', this.clickHandler);
-
             const nextElement = line.end;
 
             const removeButtons = nextElement.querySelectorAll('.remove-split');
-            console.log('removeButtons: ', removeButtons);
 
             removeButtons.forEach(item => {
                 item.dispatchEvent(new Event('click'));
@@ -135,6 +104,7 @@ console.log('123,', line.start.closest('.fob'));
             nextElement.remove();
             line.remove();
         }
+        this.parentField.removeEventListener('mousemove', this.listener, false);
 
         for (let i = 0; i < arrayLines.length; i++) {
             let clearElements = (arrayLines[i]._id === id) ? clearElement(arrayLines[i]) : array.push(arrayLines[i]);

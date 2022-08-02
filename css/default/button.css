@@ -2,6 +2,10 @@
 .btn{
     display: grid;
     padding: 0;
+    margin-left: 2px;
+    border: 1px solid grey;
+    border-radius: 3px;
+    background-color: rgb(236, 233, 233);
     cursor: pointer;
 }
 
