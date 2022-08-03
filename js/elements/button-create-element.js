@@ -42,7 +42,7 @@ export default class ButtonCreateElement extends ExtendetHTMLElement {
 
             const prevSplit = this.closest('.split');
             prevSplit.insertAdjacentElement('afterend', split);
-            prevSplit.createDraggableElement(selectWrapper);
+            this.createDraggableElement(selectWrapper);
             prevSplit.handlerUpdateSignal(this, split);
 
             const fob = split.closest('.fob');
