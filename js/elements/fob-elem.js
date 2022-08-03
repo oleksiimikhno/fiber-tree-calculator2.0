@@ -7,12 +7,6 @@ export default class FobElement extends ExtendetHTMLElement {
         super();
         this.idFob = FobElement.#instances++;
         this.rect = this.getBoundingClientRect();
-
-        // this.count++;
-        // this.dataset.fobId = count;
-        // console.log(`Create element FOB ${this.dataset.fobId++}`);
-        // this.firstSplit = 
-        // this.mouseDownOnThis = false;
     }
 
     connectedCallback() {
@@ -29,12 +23,10 @@ export default class FobElement extends ExtendetHTMLElement {
     }
 
     _addEventListeners() {
-        this.addEventListener('click', this.createFob);
         this.querySelector('.draggable').addEventListener('mousemove', this.updateSplitLinePosition);
     }
 
     _removeEventListeners() {
-        // this.removeEventListener('click', this.createFob);
         this.querySelector('.draggable').removeEventListener('mousemove', this.updateSplitLinePosition);
     }
 
@@ -48,9 +40,6 @@ export default class FobElement extends ExtendetHTMLElement {
         
         if (target.matches('.create-fob')) {
             const split = super.createSplit()
-            this.split = split;
-
-            
 
             function createNewFob(id) {
                 let fobElem = document.createElement('fob-element'),
@@ -70,15 +59,11 @@ export default class FobElement extends ExtendetHTMLElement {
             }
 
             const newFob = createNewFob(this.idFob);
-            // let fob = newFob.querySelector('[name="in-signal"]');
             
             field.append(newFob);
-            this.setPosition(newFob);
+            this.handlerFobPosition(newFob);
 
             this.line = super.createLine(this, target, newFob.querySelector('[name="in-signal"]'));
-
-
-            // this.parentElement.addEventListener('mousemove', this.upd);
 
             super.onDraggableElement(newFob);
             super.handlerForceUpdateSignal(target, newFob);
@@ -113,7 +98,7 @@ export default class FobElement extends ExtendetHTMLElement {
         })
     }
 
-    setPosition(newFob) {
+    handlerFobPosition(newFob) {
         const getSplitPosition = super.getTranslateXY(this);
 
         let position = getSplitPosition, widthThisFob = this.offsetWidth + 40;
