@@ -1,7 +1,7 @@
 
 .btn{
     display: grid;
-    padding: 0;
+    padding: 0 1px;
     margin-left: 2px;
     border: 1px solid grey;
     border-radius: 3px;
@@ -9,9 +9,18 @@
     cursor: pointer;
 }
 
-.create-fob{
+.btn-fob{
     position: absolute;
     right: -30px;
     background-color: inherit;
     border: 0px;
+}
+
+.create-fob > svg{
+    fill: #2c9203;
+}
+
+.remove-fob > svg{
+    transform: rotate(180deg);
+    fill: red;
 }
