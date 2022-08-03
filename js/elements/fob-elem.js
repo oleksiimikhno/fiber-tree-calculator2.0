@@ -49,7 +49,7 @@ export default class FobElement extends ExtendetHTMLElement {
             const split = super.createSplit()
             this.split = split;
 
-            const getSplitPosition = super.getTranslateXY(this);
+            
 
             function createNewFob(id) {
                 let fobElem = document.createElement('fob-element'),
@@ -68,31 +68,11 @@ export default class FobElement extends ExtendetHTMLElement {
                     return fobElem;
             }
 
-            function setPosition(thisFob) {
-                let position = getSplitPosition,
-                    widthThisFob = thisFob.offsetWidth + 40;
-
-                newFob.style.transform = `translate(${position.translateX + widthThisFob}px, ${position.translateY}px)`;
-            }
-
-            function updateSignal(inputSignal) {
-                let parent = target.closest('.split-out');
-                let getOutSignalElement = parent.querySelector('.out-signal');
-                inputSignal.value = getOutSignalElement.value;
-    
-                getOutSignalElement.addEventListener('change', (event) => {
-                    const target = event.target;
-                    inputSignal.value = target.value;
-    
-                    inputSignal.dispatchEvent(new Event('change'));
-                })
-            }
-
             let newFob = createNewFob(this.idFob);
             let fob = newFob.querySelector('[name="in-signal"]');
             
             field.append(newFob);
-            setPosition(this);
+            this.setPosition(newFob);
 
 
             this.line = super.createLine(this, target, fob);
@@ -100,15 +80,31 @@ export default class FobElement extends ExtendetHTMLElement {
 
             // this.parentElement.addEventListener('mousemove', this.upd);
 
-
             super.onDraggableElement(newFob);
-            updateSignal(fob);
+            this.updateSignal(target, fob);
         }
     }
 
-    // upd() {
-    //     AnimEvent.add(() => this.line.position()), false
-    // }
+    updateSignal(target, inputSignal) {
+        let parent = target.closest('.split-out');
+        let getOutSignalElement = parent.querySelector('.out-signal');
+        inputSignal.value = getOutSignalElement.value;
+
+        getOutSignalElement.addEventListener('change', (event) => {
+            const target = event.target;
+            inputSignal.value = target.value;
+
+            inputSignal.dispatchEvent(new Event('change'));
+        })
+    }
+
+    setPosition(newFob) {
+        const getSplitPosition = super.getTranslateXY(this);
+
+        let position = getSplitPosition, widthThisFob = this.offsetWidth + 40;
+
+        newFob.style.transform = `translate(${position.translateX + widthThisFob}px, ${position.translateY}px)`;
+    }
 
     // removeFob() {
 
