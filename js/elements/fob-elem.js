@@ -34,6 +34,7 @@ export default class FobElement extends ExtendetHTMLElement {
     }
 
     _removeEventListeners() {
+        // this.removeEventListener('click', this.createFob);
         this.querySelector('.draggable').removeEventListener('mousemove', this.updateSplitLinePosition);
     }
 
@@ -68,24 +69,38 @@ export default class FobElement extends ExtendetHTMLElement {
                     return fobElem;
             }
 
-            let newFob = createNewFob(this.idFob);
-            let fob = newFob.querySelector('[name="in-signal"]');
+            const newFob = createNewFob(this.idFob);
+            // let fob = newFob.querySelector('[name="in-signal"]');
             
             field.append(newFob);
             this.setPosition(newFob);
 
-
-            this.line = super.createLine(this, target, fob);
+            this.line = super.createLine(this, target, newFob.querySelector('[name="in-signal"]'));
 
 
             // this.parentElement.addEventListener('mousemove', this.upd);
 
             super.onDraggableElement(newFob);
-            this.updateSignal(target, fob);
+            super.handlerForceUpdateSignal(target, newFob);
         }
     }
+    
+    handlerUpdateSignal(target, split) {
+        let inputSignal = split.querySelector('[name="in-signal"]');
 
-    updateSignal(target, inputSignal) {
+        let parent = target.closest('.split-out');
+        let getOutSignalElement = parent.querySelector('.out-signal');
+        inputSignal.value = getOutSignalElement.value;
+
+        getOutSignalElement.addEventListener('change', (event) => {
+            const target = event.target;
+            inputSignal.value = target.value;
+
+            inputSignal.dispatchEvent(new Event('change'));
+        })
+    }
+
+    handlerUpdateSignal(target, inputSignal) {
         let parent = target.closest('.split-out');
         let getOutSignalElement = parent.querySelector('.out-signal');
         inputSignal.value = getOutSignalElement.value;
@@ -105,10 +120,6 @@ export default class FobElement extends ExtendetHTMLElement {
 
         newFob.style.transform = `translate(${position.translateX + widthThisFob}px, ${position.translateY}px)`;
     }
-
-    // removeFob() {
-
-    // }
 }
 
 customElements.define('fob-element', FobElement);
