@@ -37,14 +37,14 @@ export default class ExtendetHTMLElement extends HTMLElement {
             <div class="column out-split">
                 <div class="split-out row" data-id="0">
                     <input class="out-signal" data-id="0" name="out-split" value="0" disabled="">
-                    <button-create-element class="btn btn-split create-split"></button-create-element> 
+                    <button-create-split class="btn btn-split create-split"></button-create-split> 
                     <button class="btn create-fob">
                         <svg class="icon icon-out green"><use xlink:href="icon/icon.symbol.svg#arrow-right-line"></use></svg>
                     </button>
                 </div>
                 <div class="split-out row" data-id="0">
                     <input class="out-signal" data-id="0" name="out-split" value="0" disabled="">
-                    <button-create-element class="btn btn-split create-split"></button-create-element> 
+                    <button-create-split class="btn btn-split create-split"></button-create-split> 
                     <button class="btn create-fob">
                         <svg class="icon icon-out green"><use xlink:href="icon/icon.symbol.svg#arrow-right-line"></use></svg>
                     </button>
@@ -64,6 +64,7 @@ export default class ExtendetHTMLElement extends HTMLElement {
     }
 
     createLine(prevElement, target, newElement, color = '#3197fd', startSocket = 'auto') {
+        console.log('newElement: ', newElement);
         this.prevElement = prevElement.parentElement;
 
         const line = new LeaderLine(target, newElement);
@@ -78,6 +79,21 @@ export default class ExtendetHTMLElement extends HTMLElement {
         this.updateLinePosition(this.prevElement, line);
 
         return line;
+    }
+
+    handlerForceUpdateSignal(target, element) {
+        const inputSignal = element.querySelector('[name="in-signal"]');
+
+        const parent = target.closest('.split-out');
+        const getOutSignalElement = parent.querySelector('.out-signal');
+        inputSignal.value = getOutSignalElement.value;
+
+        getOutSignalElement.addEventListener('change', (event) => {
+            const target = event.target;
+            inputSignal.value = target.value;
+
+            inputSignal.dispatchEvent(new Event('change'));
+        })
     }
 
     updateLinePosition(element, line) {
@@ -102,6 +118,7 @@ export default class ExtendetHTMLElement extends HTMLElement {
                 item.dispatchEvent(new Event('click'));
             });
             nextElement.remove();
+            console.log('nextElement: ', nextElement);
             line.remove();
         }
         this.parentField.removeEventListener('mousemove', this.listener, false);

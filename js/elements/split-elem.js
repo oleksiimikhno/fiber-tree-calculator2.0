@@ -35,32 +35,32 @@ export default class SplitElement extends ExtendetHTMLElement {
     }
 
     _render() {
-        setTimeout(() => this.calcSignal(), 0);
-        setTimeout(() => this.onSplitPosition(this), 0);
+        setTimeout(() => this.calcSplitSignal(), 0);
+        setTimeout(() => this.handlerSplitPosition(this), 0);
     }
 
     _addEventListeners() {
-        this.addEventListener('change', this.calcSignal);
+        this.addEventListener('change', this.calcSplitSignal);
 
         this.querySelector('[name="in-signal"]').addEventListener('change', (e) =>{
-            this.calcSignal()
+            this.calcSplitSignal()
         });
 
         this.addEventListener('mousemove', this.onMovingSplit);
     }
 
     _removeEventListeners() {
-        this.removeEventListener('change', this.calcSignal);
+        this.removeEventListener('change', this.calcSplitSignal);
 
         this.querySelector('[name="in-signal"]').removeEventListener('change', (e) =>{
-            this.calcSignal()
+            this.calcSplitSignal()
         });
 
-        // this.closest('.fob').removeEventListener('mousemove', this.handlerResizeFob);
+        // this.closest('.fob').removeEventListener('mousemove', this.onSplitMoveResizedFob);
         this.removeEventListener('mousemove', this.onMovingSplit);
     }
 
-    calcSignal() {
+    calcSplitSignal() {
         let incoming = this.querySelector('.in-split'),
             arrayOutcomingSignal = this.querySelectorAll('.out-signal'),
             type = this.getAttribute('type'),
@@ -89,19 +89,11 @@ export default class SplitElement extends ExtendetHTMLElement {
         }
     }
 
-    handlerUpdateSignal(target, split) {
-        let inputSignal = split.querySelector('[name="in-signal"]');
-
-        let parent = target.closest('.split-out');
-        let getOutSignalElement = parent.querySelector('.out-signal');
-        inputSignal.value = getOutSignalElement.value;
-
-        getOutSignalElement.addEventListener('change', (event) => {
-            const target = event.target;
-            inputSignal.value = target.value;
-
-            inputSignal.dispatchEvent(new Event('change'));
-        })
+    createDraggableElement(selectWrapper) {
+        const drag = document.createElement('div');
+        drag.classList.add('draggable');
+        drag.textContent = '';
+        selectWrapper.append(drag);
     }
 
     onMovingSplit() {
@@ -118,23 +110,24 @@ export default class SplitElement extends ExtendetHTMLElement {
         }
     }
 
-    handlerResizeFob(event, fob, split) {
+    onSplitMoveResizedFob(event, fob, split) {
+
         let rectFob = fob.getBoundingClientRect();
         let rectSplit = split.getBoundingClientRect();
 
         if ((rectFob.right - 30) < rectSplit.right) {
             super.onSetPosition(split, 'right', this.line);
             
-            this.onSplitPosition(split);
+            this.handlerSplitPosition(split);
         }
 
         if ((rectFob.bottom - 30) < rectSplit.bottom) {
             super.onSetPosition(split, 'bottom', this.line);
-            this.onSplitPosition(split);
+            this.handlerSplitPosition(split);
         }
     }
 
-    onSplitPosition(split) {
+    handlerSplitPosition(split) {
         const dragElem = split.querySelector('.draggable');
 
         if (!dragElem) return;
