@@ -23,8 +23,6 @@ export default class ExtendetHTMLElement extends HTMLElement {
     }
 
     _removeEventListeners() {
-        console.log('qwe');
-        // this.prevElement.removeEventListener('mousemove', AnimEvent.add(() => line.position()), false);
     }
 
     createSplit(id) {
@@ -38,16 +36,12 @@ export default class ExtendetHTMLElement extends HTMLElement {
                 <div class="split-out row" data-id="0">
                     <input class="out-signal" data-id="0" name="out-split" value="0" disabled="">
                     <button-create-split class="btn btn-split create-split"></button-create-split> 
-                    <button class="btn create-fob">
-                        <svg class="icon icon-out green"><use xlink:href="icon/icon.symbol.svg#arrow-right-line"></use></svg>
-                    </button>
+                    <button-create-fob class="btn btn-fob create-fob"></button-create-fob>
                 </div>
                 <div class="split-out row" data-id="0">
                     <input class="out-signal" data-id="0" name="out-split" value="0" disabled="">
                     <button-create-split class="btn btn-split create-split"></button-create-split> 
-                    <button class="btn create-fob">
-                        <svg class="icon icon-out green"><use xlink:href="icon/icon.symbol.svg#arrow-right-line"></use></svg>
-                    </button>
+                    <button-create-fob class="btn btn-fob create-fob"></button-create-fob>
                 </div>
             </div>`;
 
@@ -64,7 +58,6 @@ export default class ExtendetHTMLElement extends HTMLElement {
     }
 
     createLine(prevElement, target, newElement, color = '#3197fd', startSocket = 'auto') {
-        console.log('newElement: ', newElement);
         this.prevElement = prevElement.parentElement;
 
         const line = new LeaderLine(target, newElement);
@@ -112,16 +105,13 @@ export default class ExtendetHTMLElement extends HTMLElement {
         const clearElement = (line) => {
             const nextElement = line.end;
 
-            const removeButtons = nextElement.querySelectorAll('.remove-split');
+            const checkFobElement = (nextElement.classList.contains('in-split'))
+                ? nextElement.closest('.fob').remove()
+                : nextElement.remove();
 
-            removeButtons.forEach(item => {
-                item.dispatchEvent(new Event('click'));
-            });
-            nextElement.remove();
-            console.log('nextElement: ', nextElement);
+            this.parentField.removeEventListener('mousemove', this.listener, false);
             line.remove();
         }
-        this.parentField.removeEventListener('mousemove', this.listener, false);
 
         for (let i = 0; i < arrayLines.length; i++) {
             let clearElements = (arrayLines[i]._id === id) ? clearElement(arrayLines[i]) : array.push(arrayLines[i]);
@@ -156,11 +146,15 @@ export default class ExtendetHTMLElement extends HTMLElement {
         }
     }
 
-    onChangeRemoveButton(target, iconName) {
-        target.classList.toggle('create-split');
-        setTimeout(() => target.classList.toggle('remove-split'), 0);
+    onChangeRemoveButton(target, targetName, iconName = 'arrow-right-line') {
+        target.classList.toggle(`create-${targetName}`);
+        setTimeout(() => target.classList.toggle(`remove-${targetName}`), 0);
 
-        target.nextElementSibling.classList.toggle('hidden');
+        const hiddenButton = (targetName === 'split')
+            ? target.nextElementSibling.classList.toggle('hidden')
+            : target.previousElementSibling.classList.toggle('hidden');
+
+        
 
         this.swapIcon(target.querySelector('use'), iconName);
     }

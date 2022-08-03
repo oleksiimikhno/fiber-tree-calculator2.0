@@ -11,6 +11,7 @@ export default class ButtonCreateSplit extends SplitElement {
     }
 
     disconnectedCallback() {
+        super.handlerRemoveElement(+this.dataset.lineId, 'split');
         this._removeEventListeners();
     }
 
@@ -53,7 +54,7 @@ export default class ButtonCreateSplit extends SplitElement {
 
             this.line = super.createLine(fob, this, split, 'coral');
 
-            super.onChangeRemoveButton(this, 'subtract-line');
+            super.onChangeRemoveButton(this, 'split', 'subtract-line');
         }
     }
 
@@ -63,8 +64,8 @@ export default class ButtonCreateSplit extends SplitElement {
         if (target.matches('.remove-split')) {
             const id = +target.dataset.lineId
 
-            super.onChangeRemoveButton(target, 'add-fill')
-            super.handlerRemoveElement(id);
+            super.onChangeRemoveButton(target, 'split', 'add-fill')
+            super.handlerRemoveElement(id, 'split');
         }
     }
 }
