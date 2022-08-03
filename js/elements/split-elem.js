@@ -60,13 +60,6 @@ export default class SplitElement extends ExtendetHTMLElement {
         this.removeEventListener('mousemove', this.onMovingSplit);
     }
 
-    createDraggableElement(selectWrapper) {
-        const drag = document.createElement('div');
-        drag.classList.add('draggable');
-        drag.textContent = '';
-        selectWrapper.append(drag);
-    }
-
     calcSignal() {
         let incoming = this.querySelector('.in-split'),
             arrayOutcomingSignal = this.querySelectorAll('.out-signal'),
@@ -126,7 +119,6 @@ export default class SplitElement extends ExtendetHTMLElement {
     }
 
     handlerResizeFob(event, fob, split) {
-        console.log('handlerResizeFob: ');
         let rectFob = fob.getBoundingClientRect();
         let rectSplit = split.getBoundingClientRect();
 
