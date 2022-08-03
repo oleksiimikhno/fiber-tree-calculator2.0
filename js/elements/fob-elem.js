@@ -34,41 +34,6 @@ export default class FobElement extends ExtendetHTMLElement {
         const fob = event.target.closest('.fob');
         fob.querySelector('.grid-field').dispatchEvent(new Event('mousemove'));
     }
- 
-    createFob(event) {
-        const target = event.target;
-        
-        if (target.matches('.create-fob')) {
-            const split = super.createSplit()
-
-            function createNewFob(id) {
-                let fobElem = document.createElement('fob-element'),
-                    fobHead = document.createElement('div'),
-                    fobGrid = document.createElement('div');
-
-                    fobElem.classList.add('fob');
-                    fobHead.classList.add('fob-head', 'draggable');
-                    fobHead.textContent = `Drag This ${id}`;
-                    fobElem.append(fobHead);
-                    fobGrid.classList.add('grid-field');
-                    fobElem.append(fobGrid);
-        
-                    fobGrid.insertAdjacentElement('beforeend', split);
-
-                    return fobElem;
-            }
-
-            const newFob = createNewFob(this.idFob);
-            
-            field.append(newFob);
-            this.handlerFobPosition(newFob);
-
-            this.line = super.createLine(this, target, newFob.querySelector('[name="in-signal"]'));
-
-            super.onDraggableElement(newFob);
-            super.handlerForceUpdateSignal(target, newFob);
-        }
-    }
     
     handlerUpdateSignal(target, split) {
         let inputSignal = split.querySelector('[name="in-signal"]');
@@ -99,9 +64,12 @@ export default class FobElement extends ExtendetHTMLElement {
     }
 
     handlerFobPosition(newFob) {
-        const getSplitPosition = super.getTranslateXY(this);
+        const fob = this.closest('.fob')
 
-        let position = getSplitPosition, widthThisFob = this.offsetWidth + 40;
+        const getSplitPosition = super.getTranslateXY(fob);
+
+        const position = getSplitPosition, 
+            widthThisFob = fob.offsetWidth + 40;
 
         newFob.style.transform = `translate(${position.translateX + widthThisFob}px, ${position.translateY}px)`;
     }
