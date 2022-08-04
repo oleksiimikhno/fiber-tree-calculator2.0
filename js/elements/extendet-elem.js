@@ -35,13 +35,21 @@ export default class ExtendetHTMLElement extends HTMLElement {
             <div class="column out-split">
                 <div class="split-out row" data-id="0">
                     <input class="out-signal" data-id="0" name="out-split" value="0" disabled="">
-                    <button-create-split class="btn btn-split create-split"></button-create-split> 
-                    <button-create-fob class="btn btn-fob create-fob"></button-create-fob>
+                    <button-create-split class="btn btn-split create-split">
+                        <svg class="icon icon-out"><use xlink:href="icon/icon.symbol.svg#add-fill"></use></svg>
+                    </button-create-split> 
+                    <button-create-fob class="btn btn-fob create-fob">
+                        <svg class="icon icon-out "><use xlink:href="icon/icon.symbol.svg#arrow-right-line"></use></svg>
+                    </button-create-fob>
                 </div>
                 <div class="split-out row" data-id="0">
                     <input class="out-signal" data-id="0" name="out-split" value="0" disabled="">
-                    <button-create-split class="btn btn-split create-split"></button-create-split> 
-                    <button-create-fob class="btn btn-fob create-fob"></button-create-fob>
+                    <button-create-split class="btn btn-split create-split">
+                        <svg class="icon icon-out"><use xlink:href="icon/icon.symbol.svg#add-fill"></use></svg>
+                    </button-create-split> 
+                    <button-create-fob class="btn btn-fob create-fob">
+                        <svg class="icon icon-out "><use xlink:href="icon/icon.symbol.svg#arrow-right-line"></use></svg>
+                    </button-create-fob>
                 </div>
             </div>`;
 

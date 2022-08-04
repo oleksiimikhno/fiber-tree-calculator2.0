@@ -16,7 +16,6 @@ export default class ButtonCreateSplit extends SplitElement {
     }
 
     _render() {
-        this.appendSVG();
     }
 
     _addEventListeners() {
@@ -27,10 +26,6 @@ export default class ButtonCreateSplit extends SplitElement {
     _removeEventListeners() {
         this.removeEventListener('click', this.handlerCreateSplit);
         this.removeEventListener('click', this.handlerRemoveSplit);
-    }
-
-    appendSVG () {
-        this.insertAdjacentHTML('afterbegin','<svg class="icon icon-out"><use xlink:href="icon/icon.symbol.svg#add-fill"></use></svg>')
     }
 
     handlerCreateSplit(event) {

@@ -16,7 +16,6 @@ export default class ButtonCreateFob extends FobElement {
     }
 
     _render() {
-        this.appendSVG();
     }
 
     _addEventListeners() {
@@ -27,10 +26,6 @@ export default class ButtonCreateFob extends FobElement {
     _removeEventListeners() {
         this.removeEventListener('click', this.handlerCreateFob);
         this.removeEventListener('click', this.handlerRemoveFob);
-    }
-
-    appendSVG () {
-        this.insertAdjacentHTML('afterbegin','<svg class="icon icon-out "><use xlink:href="icon/icon.symbol.svg#arrow-right-line"></use></svg>');
     }
 
     handlerCreateFob(event) {
