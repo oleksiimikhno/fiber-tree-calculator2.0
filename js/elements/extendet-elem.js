@@ -25,7 +25,7 @@ export default class ExtendetHTMLElement extends HTMLElement {
     _removeEventListeners() {
     }
 
-    createSplit(id) {
+    createSplit() {
         let split = document.createElement('split-element');
         split.classList.add('row', 'split');
         
@@ -33,8 +33,8 @@ export default class ExtendetHTMLElement extends HTMLElement {
             `<split-type-select class="row split-selected"></split-type-select>
             <div class="vertical-center"><input class="in-split" name="in-signal" value="0"></div>
             <div class="column out-split">
-                <div class="split-out row" data-id="0">
-                    <input class="out-signal" data-id="0" name="out-split" value="0" disabled="">
+                <div class="split-out row">
+                    <input class="out-signal" name="out-split" value="0" disabled="">
                     <button-create-split class="btn btn-split create-split">
                         <svg class="icon icon-out"><use xlink:href="icon/icon.symbol.svg#add-fill"></use></svg>
                     </button-create-split> 
@@ -42,8 +42,8 @@ export default class ExtendetHTMLElement extends HTMLElement {
                         <svg class="icon icon-out "><use xlink:href="icon/icon.symbol.svg#arrow-right-line"></use></svg>
                     </button-create-fob>
                 </div>
-                <div class="split-out row" data-id="0">
-                    <input class="out-signal" data-id="0" name="out-split" value="0" disabled="">
+                <div class="split-out row">
+                    <input class="out-signal" name="out-split" value="0" disabled="">
                     <button-create-split class="btn btn-split create-split">
                         <svg class="icon icon-out"><use xlink:href="icon/icon.symbol.svg#add-fill"></use></svg>
                     </button-create-split> 
@@ -161,8 +161,6 @@ export default class ExtendetHTMLElement extends HTMLElement {
         const hiddenButton = (targetName === 'split')
             ? target.nextElementSibling.classList.toggle('hidden')
             : target.previousElementSibling.classList.toggle('hidden');
-
-        
 
         this.swapIcon(target.querySelector('use'), iconName);
     }
