@@ -1,6 +1,6 @@
 
 .btn{
-    display: grid;
+    display: flex;
     padding: 0 1px;
     margin-left: 2px;
     border: 1px solid grey;
