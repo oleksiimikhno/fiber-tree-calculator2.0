@@ -35,20 +35,17 @@ export default class ButtonCreateFob extends FobElement {
             const split = super.createSplit()
 
             function createNewFob(id) {
-                let fobElem = document.createElement('fob-element'),
-                    fobHead = document.createElement('div'),
-                    fobGrid = document.createElement('div');
+                const fob = document.createElement('fob-element');
 
-                    fobElem.classList.add('fob');
-                    fobHead.classList.add('fob-head', 'draggable');
-                    fobHead.textContent = `Drag This ${id}`;
-                    fobElem.append(fobHead);
-                    fobGrid.classList.add('grid-field');
-                    fobElem.append(fobGrid);
+                    fob.classList.add('fob');
+
+                    fob.innerHTML = `
+                    <div class="fob-head draggable">Fob #${id}</div>
+                    <div class="grid-field"></div>`;
         
-                    fobGrid.insertAdjacentElement('beforeend', split);
+                    fob.querySelector('.grid-field').insertAdjacentElement('beforeend', split);
 
-                    return fobElem;
+                    return fob;
             }
 
             const newFob = createNewFob(this.idFob);
