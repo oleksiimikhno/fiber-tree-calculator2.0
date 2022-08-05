@@ -28,6 +28,7 @@ export default class FobElement extends ExtendetHTMLElement {
     _removeEventListeners() {
         this.querySelector('.draggable').removeEventListener('mousemove', this.updateSplitLinePosition);
         this.querySelector('.fob-edit').removeEventListener('click', this.handlerEditNameFob);
+        this.removeEventListener('click', this.hiddenInput);
     }
 
     handlerEditNameFob() {
@@ -46,11 +47,10 @@ export default class FobElement extends ExtendetHTMLElement {
 
         input.addEventListener('keydown', (event) => {
             if (event.code === 'NumpadEnter' || event.code === 'Enter') {
-                input.classList.toggle('hidden');
-                fobName.classList.toggle('hidden');
+                input.classList.add('hidden');
+                fobName.classList.remove('hidden');
             }
         })
-
     }
 
     hiddenInput(event) {
