@@ -6,11 +6,6 @@
 .icon-out {
     pointer-events: none;
 }
-/* .icon-remove {
-    position: absolute;
-    top: -20px;
-    right: -15px;
-} */
 
 .btn-split > .icon {
     max-height: 18px;

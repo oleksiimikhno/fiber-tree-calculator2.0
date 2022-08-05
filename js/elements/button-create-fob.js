@@ -45,7 +45,7 @@ export default class ButtonCreateFob extends FobElement {
                     fob.innerHTML = `
                     <div class="fob-head draggable">
                         <span class="fob-name">Fob #${id}</span>
-                        <button class="fob-edit"><svg class="icon icon-out"><use xlink:href="icon/icon.symbol.svg#edit-line"></use></svg></button>
+                        <button class="btn fob-edit"><svg class="icon icon-out"><use xlink:href="icon/icon.symbol.svg#edit-line"></use></svg></button>
                     </div>
                     <div class="grid-field"></div>
                     <input type="text" class="input-fob-name hidden" placeholder="Change fob name">
