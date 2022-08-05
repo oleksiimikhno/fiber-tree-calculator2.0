@@ -31,34 +31,6 @@ export default class FobElement extends ExtendetHTMLElement {
         const fob = event.target.closest('.fob');
         fob.querySelector('.grid-field').dispatchEvent(new Event('mousemove'));
     }
-    
-    handlerUpdateSignal(target, split) {
-        let inputSignal = split.querySelector('[name="in-signal"]');
-
-        let parent = target.closest('.split-out');
-        let getOutSignalElement = parent.querySelector('.out-signal');
-        inputSignal.value = getOutSignalElement.value;
-
-        getOutSignalElement.addEventListener('change', (event) => {
-            const target = event.target;
-            inputSignal.value = target.value;
-
-            inputSignal.dispatchEvent(new Event('change'));
-        })
-    }
-
-    handlerUpdateSignal(target, inputSignal) {
-        let parent = target.closest('.split-out');
-        let getOutSignalElement = parent.querySelector('.out-signal');
-        inputSignal.value = getOutSignalElement.value;
-
-        getOutSignalElement.addEventListener('change', (event) => {
-            const target = event.target;
-            inputSignal.value = target.value;
-
-            inputSignal.dispatchEvent(new Event('change'));
-        })
-    }
 
     handlerFobPosition(newFob) {
         const fob = this.closest('.fob')
