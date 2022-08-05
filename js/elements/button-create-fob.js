@@ -1,12 +1,14 @@
 import FobElement from './fob-elem.js';
 
 export default class ButtonCreateFob extends FobElement {
+    static #instances = 2;
+
     constructor() {
         super();
+        this.idFob = ButtonCreateFob.#instances;
     }
 
     connectedCallback() {
-        this._render();
         this._addEventListeners();
     }
 
@@ -32,7 +34,8 @@ export default class ButtonCreateFob extends FobElement {
         const target = event.target;
         
         if (target.matches('.create-fob')) {
-            const split = super.createSplit()
+            const split = super.createSplit();
+            this.idFob = ButtonCreateFob.#instances++;
 
             function createNewFob(id) {
                 const fob = document.createElement('fob-element');
@@ -69,6 +72,7 @@ export default class ButtonCreateFob extends FobElement {
 
         if (target.matches('.remove-fob')) {
             const id = +target.dataset.lineId
+            this.idFob = ButtonCreateFob.#instances--;
 
             super.onChangeRemoveButton(target, 'fob')
             super.handlerRemoveElement(id, 'fob');

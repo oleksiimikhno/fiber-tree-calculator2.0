@@ -3,27 +3,18 @@ import ExtendetHTMLElement from './extendet-elem.js';
 import objSplit from '../split-table-info/table.js';
 
 export default class SplitElement extends ExtendetHTMLElement {
-    static #instances = 2;
-
     constructor() {
         super();
-        this.idSplit = SplitElement.#instances++;
-
         this.rect = this.getBoundingClientRect();
-        // this.fob;
-        // this.split
-        // let line = 123
     }
 
     connectedCallback() {
-        console.log(`Split element in DOM ${this.idSplit}`);
         this._render();
         this._addEventListeners();
     }
 
     disconnectedCallback() {
         this._removeEventListeners();
-        
     }
 
     static get observedAttributes() {
@@ -41,22 +32,13 @@ export default class SplitElement extends ExtendetHTMLElement {
 
     _addEventListeners() {
         this.addEventListener('change', this.calcSplitSignal);
-
-        this.querySelector('[name="in-signal"]').addEventListener('change', (e) =>{
-            this.calcSplitSignal()
-        });
-
+        this.querySelector('[name="in-signal"]').addEventListener('change', () => this.calcSplitSignal());
         this.addEventListener('mousemove', this.onMovingSplit);
     }
 
     _removeEventListeners() {
         this.removeEventListener('change', this.calcSplitSignal);
-
-        this.querySelector('[name="in-signal"]').removeEventListener('change', (e) =>{
-            this.calcSplitSignal()
-        });
-
-        // this.closest('.fob').removeEventListener('mousemove', this.onSplitMoveResizedFob);
+        this.querySelector('[name="in-signal"]').removeEventListener('change', () => this.calcSplitSignal());
         this.removeEventListener('mousemove', this.onMovingSplit);
     }
 
@@ -130,7 +112,7 @@ export default class SplitElement extends ExtendetHTMLElement {
     handlerSplitPosition(split) {
         const dragElem = split.querySelector('.draggable');
 
-        if (!dragElem) return;
+        if (!dragElem) return null;
 
         const draggable = super.onDraggableElement(split);
 

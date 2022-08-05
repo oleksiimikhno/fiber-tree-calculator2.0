@@ -1,11 +1,8 @@
 import ExtendetHTMLElement from './extendet-elem.js';
 
 export default class FobElement extends ExtendetHTMLElement {
-    static #instances = 2;
-
-    constructor(name) {
+    constructor() {
         super();
-        this.idFob = FobElement.#instances++;
         this.rect = this.getBoundingClientRect();
     }
 
