@@ -10,7 +10,10 @@
 <body>
 <main id="field">
 	<fob-element class="fob">
-		<div class="fob-head draggable">Fob #1</div>
+		<div class="fob-head draggable">
+			<span class="fob-name">Fob #1</span>
+			<button class="fob-edit"><svg class="icon icon-out"><use xlink:href="icon/icon.symbol.svg#edit-line"></use></svg></button>
+		</div>
 		<div class="grid-field">
 			<split-element class="row split">
 				<split-type-select class="row split-selected"></split-type-select>
@@ -37,6 +40,7 @@
 				</div>
 			</split-element>
 		</div>
+		<input type="text" class="input-fob-name hidden" placeholder="Change fob name">
 	</fob-element>
 </main>
 <script src="js/module/anim-event.min.js"></script>

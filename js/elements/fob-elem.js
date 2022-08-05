@@ -21,10 +21,45 @@ export default class FobElement extends ExtendetHTMLElement {
 
     _addEventListeners() {
         this.querySelector('.draggable').addEventListener('mousemove', this.updateSplitLinePosition);
+        this.querySelector('.fob-edit').addEventListener('click', this.handlerEditNameFob);
+        this.addEventListener('click', this.hiddenInput);
     }
 
     _removeEventListeners() {
         this.querySelector('.draggable').removeEventListener('mousemove', this.updateSplitLinePosition);
+        this.querySelector('.fob-edit').removeEventListener('click', this.handlerEditNameFob);
+    }
+
+    handlerEditNameFob() {
+        const fob = this.closest('.fob'),
+              input = fob.querySelector('.input-fob-name'),
+              fobName = fob.querySelector('.fob-name');
+
+        input.classList.toggle('hidden');
+        fobName.classList.toggle('hidden');
+
+        input.focus();
+
+        input.addEventListener('input', () => {
+            fobName.textContent = input.value;
+        })
+
+        input.addEventListener('keydown', (event) => {
+            if (event.code === 'NumpadEnter' || event.code === 'Enter') {
+                input.classList.toggle('hidden');
+                fobName.classList.toggle('hidden');
+            }
+        })
+
+    }
+
+    hiddenInput(event) {
+        const target = event.target;
+
+        if (!target.matches('.fob-edit') && !target.matches('.input-fob-name')) {
+            this.querySelector('.input-fob-name').classList.add('hidden');
+            this.querySelector('.fob-name').classList.remove('hidden');
+        }
     }
 
     updateSplitLinePosition(event) {
