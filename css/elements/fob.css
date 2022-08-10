@@ -88,3 +88,14 @@
     transform: translateY(-30%);
     
 }
+
+.fob-description{
+    position: relative;
+    /* top: calc(32px); */
+    margin-top: auto;
+    /* margin: 45px; */
+    padding: 0 15px;
+    bottom: 0;
+    background-color: inherit;
+    min-width: calc(100% - 10px);
+}
