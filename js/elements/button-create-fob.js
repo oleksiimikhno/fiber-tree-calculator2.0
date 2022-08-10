@@ -47,7 +47,7 @@ export default class ButtonCreateFob extends FobElement {
                         <span class="fob-name">Fob #${id}</span>
                         <button class="btn fob-edit"><svg class="icon icon-out"><use xlink:href="icon/icon.symbol.svg#edit-line"></use></svg></button>
                     </div>
-                    <textarea class="fob-description" rows="2" cols="33"></textarea>
+                    <textarea class="fob-description" rows="2" cols="33" placeholder="description fob"></textarea>
                     <div class="grid-field"></div>
                     <input type="text" class="input-fob-name hidden" placeholder="Change fob name">
                     `;
