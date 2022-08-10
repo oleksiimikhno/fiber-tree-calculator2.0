@@ -65,7 +65,7 @@ export default class ExtendetHTMLElement extends HTMLElement {
         return draggable;
     }
 
-    createLine(prevElement, target, newElement, color = '#3197fd', startSocket = 'auto') {
+    createLine(prevElement, target, newElement, color = '#3197fd', startSocket = 'right') {
         this.prevElement = prevElement.parentElement;
 
         const line = new LeaderLine(target, newElement);
