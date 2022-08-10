@@ -6,14 +6,13 @@
     border-radius: 10px;
     border: 1px solid #999;
     background-color: rgb(196, 228, 255);
-    margin: 0px 15px;
+    margin: 0px 10px;
 }
 .split-selected {
     position: absolute;
     top: -15px;
     left: 50%;
     transform: translateX(-50%); 
-    
 }
 .select-fiber{
     width: 55px;
