@@ -33,6 +33,7 @@
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     padding: 5px 10px;
+    box-shadow: 0 0 11px rgba(33,33,33,.2); 
 }
 
 .fob-name{
@@ -85,13 +86,16 @@
 }
 
 .fob-description{
-    position: relative;
+    min-width: calc(100% - 20px);
+    max-width: calc(100% - 20px);
+    max-height: 100px;
     margin-left: 10px;
     padding: 0 5px;
     border-top: 0;
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
     background-color: inherit;
-    min-width: calc(100% - 20px);
-    max-width: calc(100% - 20px);
+}
+.fob-description:hover {
+    box-shadow: 0 0 11px rgba(33,33,33,.2); 
 }
