@@ -81,8 +81,7 @@
 .grid-field > .split:first-child{
     position: absolute;
     top: 50%;
-    transform: translateY(-30%);
-    
+    transform: translateY(-10%);
 }
 
 .fob-description{
